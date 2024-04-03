@@ -47,14 +47,16 @@ export default {
       newContent: '',
       replyInputStates: {},
       comments: [],
+      loginId: this.$cookies.get('id')
     };
   },
-  mounted() {
-    console.log(this.reply);
+  async mounted() {      
     this.fetchReplyLikeStatus(this.reply);
-    this.fetchProfileImage(this.reply.userId);
+    await this.fetchComments();
+    await this.fetchProfileImage(this.reply.userId);
     this.fetchCommentCount();
   },
+
   methods: {
     updateCommentCount(){
       this.$emit('checkChangeCount')
@@ -113,7 +115,7 @@ export default {
       reply.liked = liked;
       const boardId = this.selectedCard ? this.selectedCard.id : this.selectedPost.id;
 
-      this.axios.post(`/api/comment/replyLiked`, {
+      this.axios.post(`/api/comment/liked`, {
         userId: this.$cookies.get('id'),
         boardId: boardId,
         commentId: reply.id,
@@ -147,20 +149,19 @@ export default {
         console.error('댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
       });
     },
-    // 댓글 좋아요 상태 유지
-    fetchReplyLikeStatus(reply) {
-      // console.log('reply', reply);
-      this.axios.get(`/api/comment/${reply.id}/likeStatus`)
-      .then(res => {
-        // console.log(res);
-        const replyLiked = res.data;
-        // console.log(replyLiked);
-        reply.liked = replyLiked === true;
-      })
-      .catch(error => {
-        console.error('댓글 좋아요 상태를 불러오는 중 오류가 발생했습니다.', error);
-      });
-    },
+  
+    async fetchReplyLikeStatus(reply) {
+    try {
+      const res = await this.axios.get(`/api/comment/${this.loginId}/${reply.id}/likeStatus`);
+      const commentLiked = res.data;
+  
+      reply.liked = commentLiked === true;
+      console.log("응답 확인:", reply.liked, reply.content);
+
+    } catch (error) {
+      console.error('대댓글 좋아요 상태를 불러오는 중 오류가 발생했습니다.', error);
+    }
+  },
     toggleReplyInput(reply) {
       if(this.$cookies.isKey('id')){
         if (this.replyInputStates[reply.id]) {
@@ -219,6 +220,8 @@ export default {
           if (res.data && res.data.length > 0) {
             reply.replies = res.data;
             for (let s of reply.replies) {
+              this.fetchReplyLikeStatus(s);
+              
               if (!s.hasOwnProperty('showReplies'))
                 s.showReplies = false;
 
@@ -263,22 +266,26 @@ export default {
     },
       
     fetchComments() {
-    const selectedId = this.selectedCard ? this.selectedCard.id : this.selectedPost.id;
-    this.axios.get(`/api/comment/${selectedId}`)
-      .then((res) => {
-        this.comments = res.data;
-        this.comments.forEach(comment => {
-          comment.liked = commentLiked === 'true';
-          this.fetchReplies(comment);
-          this.fetchProfileImage();
-          if (comment.replies && comment.replies.length > 0) {
-            comment.replies.forEach(reply => {
-              reply.liked = replyLiked === 'true';
-            });
-          }
-        });
+      const selectedId = this.selectedCard ? this.selectedCard.id : this.selectedPost.id;
+      
+      this.axios.get(`/api/comment/${selectedId}`)
+        .then((res) => {
+          this.comments = res.data;
+          this.comments.forEach(comment => {
+            const commentId = comment.id;
+            this.axios.get(`/api/comment/${this.loginId}/${commentId}/likeStatus`)
+            .then((res) => {
+              let commentLiked = res.data;
+              comment.liked = commentLiked === true;               
+              this.fetchReplies(comment);
 
-        this.totalCommentCount = this.calculateTotalCommentCount(this.comments);
+            })
+            .catch(error => {
+              console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error);
+              this.fetchReplies(comment); 
+            });
+            this.fetchProfileImage();      
+        });
       })
       .catch(error => {
         console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);

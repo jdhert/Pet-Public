@@ -261,9 +261,7 @@ export default {
   fetchPostLikeStatus(){
     this.axios.get(`/api/free/${this.$cookies.get('id')}/${this.selectedCard.id}/likeStatus`)
     .then(res => {
-      // console.log(res);
       const postLiked = res.data;
-      // console.log(postLiked);
       this.selectedCard.liked = postLiked === true;
     })
     .catch(error => {
@@ -298,56 +296,54 @@ export default {
       });
     } else alert('로그인 한 사용자만 댓글 좋아요가 가능합니다!');
   },
-  //최상위 댓글 좋아요 수, 좋아요 저장
+  //최상위 댓글 좋아요 수, 좋아요 업데이트
   updateCommentLikeStatus(commentId, liked) {
     this.axios.put(`/api/free/${commentId}/commentLike`, null, {
       params: { liked }
     })
     .then(() => {
       console.log('댓글 좋아요 상태가 업데이트 되었습니다.');
+     
     })
     .catch(error => {
       console.error('댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
     });
   },
-  //최상위 댓글 가져오기
+
   fetchComments() {
-    this.axios.get(`/api/comment/${this.selectedCard.id}`)
-    .then((res) => {
-      // console.log('댓글 가져오기 성공:', res.data);
-      this.comments = res.data;
-      this.comments.forEach(comment => {
-        const commentId = comment.id;
-        this.axios.get(`/api/comment/${commentId}/likeStatus`)
-          .then((res)=> {
-            // console.log('댓글 좋아요 상태 가져오기 성공:', res.data); 
-            const commentLiked = res.data;
-            comment.liked = commentLiked === true;
-            this.fetchReplies(comment);
-            if (comment.replies && comment.replies.length > 0) {
-              comment.replies.forEach(reply => {
-                this.fetchReplyLikeStatus(reply);
-              });
-            }
-          })
-          .catch(error => {
-            console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error); // 
-          });
-          
-          this.axios.get(`/api/myinfo/img/${comment.userId}`)
-          .then((res) => {
-            console.log('이미지를 성공적으로 불러왔습니다.');
-            comment.imgPath = res.data;
-          })
-          .catch((error) => {
-            console.log('이미지를 불러오는데 실패했습니다:', error);
-          });
+    const selectedId = this.selectedCard ? this.selectedCard.id : this.selectedPost.id;
+    
+    this.axios.get(`/api/comment/${selectedId}`)
+      .then((res) => {
+        this.comments = res.data;
+        this.comments.forEach(comment => {
+          const commentId = comment.id;
+          this.axios.get(`/api/comment/${this.$cookies.get('id')}/${commentId}/likeStatus`)
+            .then((res) => {
+              const commentLiked = res.data;
+              comment.liked = commentLiked === true;                
+              this.fetchReplies(comment);
+            });
+
+            this.axios.get(`/api/myinfo/img/${comment.userId}`)
+            .then((res) => {
+              console.log('이미지를 성공적으로 불러왔습니다.');
+              comment.imgPath = res.data;
+            })
+            .catch(error => {
+              console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error); 
+              this.fetchReplies(comment);
+             
+            });
+        });
+      })
+      .catch(error => {
+        console.error('댓글을 불러오는 중 오류가 발생했습니다.', error);
       });
-    })
-    .catch(error => {
-      console.error('댓글을 불러오는 중 오류 발생:', error); // 
-    });
   },
+
+
+
   //댓글의 답글 불러오기
   fetchReplies(comment) {
     if (!comment.hasOwnProperty('showReplies')) {
@@ -379,16 +375,7 @@ export default {
               console.log('이미지를 불러오는데 실패했습니다:', error);
             });
           }
-
-          //좋아요 상태 가져오기
-          this.axios.get(`/api/comment/${s.id}/replyLikeStatus`)
-          .then((res)=> {
-            const replyLiked = res.data;
-            s.liked = replyLiked === true;
-          })
-          .catch(error => {
-            console.log('대댓글 좋아요 상태를 불러오는 중 오류 발생:', error);
-          });
+          this.fetchReplyLikeStatus(s);
         }
       }
     })
@@ -403,7 +390,7 @@ export default {
       let liked = !reply.liked;
       reply.liked = liked;
 
-      this.axios.post(`/api/comment/replyLiked`, {
+      this.axios.post(`/api/comment/liked`, {
         userId: this.$cookies.get('id'),
         boardId: this.selectedCard.id,
         commentId: reply.id,
@@ -449,13 +436,14 @@ export default {
 
   async fetchReplyLikeStatus(reply) {
     try {
-      const res = await this.axios.get(`/api/comment/${reply.id}/replyLikeStatus`);
-      const replyLiked = res.data;
+      const res = await this.axios.get(`/api/comment/${this.$cookies.get('id')}/${reply.id}/likeStatus`);
+      const commentLiked = res.data;
       // console.log("응답 확인:", res);
-      reply.liked = replyLiked === true;
+      reply.liked = commentLiked === true;
 
       if (reply.replies && reply.replies.length > 0) {
         for (const subReply of reply.replies) {
+          subReply.liked = commentLiked === true;
           await this.fetchReplyLikeStatus(subReply);
         }
       }
@@ -478,9 +466,9 @@ export default {
     const fetchReplies = async (comment) => {
       const replyId = comment.id;
       try {
-        const res = await this.axios.get(`/api/comment/${replyId}/replyLikeStatus`);
-        const replyLiked = res.data;
-        comment.liked = replyLiked === true;
+        const res = await this.axios.get(`/api/comment/${this.$cookies.get('id')}/${replyId}/likeStatus`);
+        const commentLiked = res.data;
+        comment.liked = commentLiked === true;
 
         if (comment.replies && comment.replies.length > 0) {
           for (const subReply of comment.replies) {
@@ -652,6 +640,7 @@ export default {
         if (res.data && res.data.length > 0) {
           comment.replies = res.data;
           for (let s of comment.replies) {
+            this.fetchReplyLikeStatus(s);
             if (!s.hasOwnProperty('showReplies'))
               s.showReplies = false;
               if (s.imgPath && !s.imgPath.startsWith('http')) {
@@ -742,8 +731,8 @@ export default {
   if (this.selectedCard) {
     this.selectedCard.viewCount++;
     await this.fetchComments();
-    this.fetchPostLikeStatus();
-    this.fetchCommentsAndRepliesLikeStatus(this.comments);
+    await this.fetchPostLikeStatus();
+    await this.fetchCommentsAndRepliesLikeStatus(this.comments);
     this.fetchCommentCount(this.selectedCard.id);
     this.increaseViewCount(this.selectedCard.id);
   }
