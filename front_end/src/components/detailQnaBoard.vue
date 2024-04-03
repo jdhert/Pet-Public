@@ -235,7 +235,7 @@
           const id = this.selectedPost.id;
           this.$emit('deleteBoard', id);
       },
-   
+      //게시글 좋아요
       toggleLike(selectedPost) {
         if (this.$cookies.isKey('id')) {
           let liked = !selectedPost.liked;
@@ -431,42 +431,39 @@
             console.error('댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
           });
       },
-      //최상위 댓글 가져오기
-      fetchComments() {
-        this.axios.get(`/api/comment/${this.selectedPost.id}`)
-          .then((res) => {
-            this.comments = res.data;
-            this.comments.forEach(comment => {
-              const commentId = comment.id;
-              this.axios.get(`/api/comment/${commentId}/likeStatus`)
-                .then((res)=> {
-                  const commentLiked = res.data;
-                  comment.liked = commentLiked === true;
-                  this.fetchReplies(comment);
-                  if (comment.replies && comment.replies.length > 0) {
-                    comment.replies.forEach(reply => {
-                      this.fetchReplyLikeStatus(reply);
-                    });
-                  }
-                })
-                .catch(error => {
-                  console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error); 
-                });
-                
-                this.axios.get(`/api/myinfo/img/${comment.userId}`)
-                .then((res) => {
-                  console.log('이미지를 성공적으로 불러왔습니다.');
-                  comment.imgPath = res.data;
-                })
-                .catch((error) => {
-                  console.log('이미지를 불러오는데 실패했습니다:', error);
-                });
+
+    fetchComments() {
+    this.axios.get(`/api/comment/${this.selectedPost.id}`)
+      .then((res) => {
+        this.comments = res.data;
+        console.log(res.data);
+        this.comments.forEach(comment => {
+          const commentId = comment.id;
+          this.axios.get(`/api/comment/${this.$cookies.get('id')}/${commentId}/likeStatus`)
+            .then((res)=> {
+            const commentLiked = res.data;
+            comment.liked = commentLiked === true;
+            this.fetchReplies(comment);
+            })
+            .catch(error => {
+              console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error);
+              this.fetchReplies(comment);
             });
-          })
-          .catch(error => {
-            console.error('댓글을 불러오는 중 오류 발생:', error); 
-          });
-      },
+            
+            this.axios.get(`/api/myinfo/img/${comment.userId}`)
+            .then((res) => {
+              console.log('이미지를 성공적으로 불러왔습니다.');
+              comment.imgPath = res.data;
+            })
+            .catch((error) => {
+              console.log('이미지를 불러오는데 실패했습니다:', error);
+            });
+        });
+      })
+      .catch(error => {
+        console.error('댓글을 불러오는 중 오류 발생:', error); 
+      });
+    },
   
       //댓글의 답글 불러오기
       fetchReplies(comment) {
@@ -483,6 +480,7 @@
         if (res.data && res.data.length > 0) {
           comment.replies = res.data;
           for (let s of comment.replies) {
+            this.fetchReplyLikeStatus(s);
             if (!s.hasOwnProperty('showReplies'))
               s.showReplies = false;  
   
@@ -497,16 +495,8 @@
                 console.log('이미지를 불러오는데 실패했습니다:', error);
               });
             }
-  
-            //좋아요 상태 가져오기
-            this.axios.get(`/api/comment/${s.id}/replyLikeStatus`)
-            .then((res)=> {
-              const replyLiked = res.data;
-              s.liked = replyLiked === true;
-            })
-            .catch(error => {
-              console.log('대댓글 좋아요 상태를 불러오는 중 오류 발생:', error);
-            });
+     
+            // this.fetchReplyLikeStatus(s);
           }
         }
       })
@@ -518,12 +508,13 @@
     //답글 좋아요 상태 유지
     async fetchReplyLikeStatus(reply) {
       try {
-        const res = await this.axios.get(`/api/comment/${reply.id}/replyLikeStatus`);
-        const replyLiked = res.data;
-        reply.liked = replyLiked === true;
+        const res = await this.axios.get(`/api/comment/${this.$cookies.get('id')}/${reply.id}/likeStatus`);
+        const commentLiked = res.data;
+        reply.liked = commentLiked === true;
   
         if (reply.replies && reply.replies.length > 0) {
           for (const subReply of reply.replies) {
+            subReply.liked = commentLiked === true;
             await this.fetchReplyLikeStatus(subReply);
           }
         }
@@ -583,7 +574,7 @@
       let liked = !reply.liked;
       reply.liked = liked;
   
-      this.axios.post(`/api/comment/replyLiked`, {
+      this.axios.post(`/api/comment/liked`, {
         userId: this.$cookies.get('id'),
         boardId: this.selectedPost.id,
         commentId: reply.id,
@@ -636,6 +627,7 @@
           if (res.data && res.data.length > 0) {
             comment.replies = res.data;
             for (let s of comment.replies) {
+              this.fetchReplyLikeStatus(s);
               if (!s.hasOwnProperty('showReplies'))
                 s.showReplies = false;
                 if (s.imgPath && !s.imgPath.startsWith('http')) {
@@ -689,7 +681,7 @@
     },
     //카테고리 태그
     getTagClass(tag) {
-      console.log(tag, '태그확인');
+      // console.log(tag, '태그확인');
       switch (tag) {
         case '고양이':
           return 'cat';
@@ -720,7 +712,7 @@
       if(this.selectedPost) {
         this.selectedPost.viewCount++;
         await this.fetchComments();
-        this.fetchPostLikeStatus();
+        await this.fetchPostLikeStatus();
         this.fetchCommentCount();
         this.fetchCommentsAndRepliesLikeStatus(this.comments);   
       }
