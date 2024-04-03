@@ -7,7 +7,7 @@
             <h1>공유하기</h1>
         </div>
         <div class="url-box">
-            <input type="text" v-model="urlToShare" ref="urlInput" style="color: #007bff; margin-right: 1%;">
+            <input type="text" v-model="urlToShare" ref="urlInput" style="color: #007bff; margin-right: 1%;" readonly>
             <button style="width: 7vw;" @click="copyUrl">URL 복사</button>
         </div>    
     </div>

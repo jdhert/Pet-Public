@@ -528,13 +528,18 @@ i {
 }
 
 .custom-button {
-    margin-left: 1380px;
+    margin-left: 1400px;
     padding: 10px 20px;
     background-color: #8d8d8d;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+@media screen and (min-width: 1440px) and (max-width: 1525px) {
+    .custom-button {
+        margin-left: 95%;
+    }
 }
 
 .pagination {
@@ -759,9 +764,7 @@ form {
 }
 
 @media screen and (min-width: 1440px) and (max-width: 2560px) {
-    .custom-button {
-        margin-left: 95%
-    }
+
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1440px) {

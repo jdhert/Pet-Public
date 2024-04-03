@@ -1367,7 +1367,15 @@ export default {
   width: 100%;
 }
 
-  
+/* @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .btn-close {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 768px) { 
+
+} */
   
   
 </style>

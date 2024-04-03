@@ -15,6 +15,7 @@
                 <div class="meta-chat">
                   <span class="fa fa-comment"></span> {{ post.commentCount}}
                   <span class="fa fa-heart" style="margin-left: 5px;"></span> {{ post.likeCount }}
+                  <span class="fa-solid fa-eye" style="margin-left: 5px;"></span> {{ post.viewCount }}
                 </div>
               </div>
               <h3 class="heading"><a href="#">{{ truncateTitle(post.title, 16) }}</a></h3>
