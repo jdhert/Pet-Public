@@ -6,15 +6,21 @@
             </button>
             <h1>공유하기</h1>
             <div class="share-platform">
-                <!-- <a id="kakao-link-btn" @click="shareKakao()">
-                	<img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="카카오톡 공유" />
-                </a> -->
+                <a id="kakao-link-btn" @click="shareKakao()">
+                	<img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="카카오톡" />
+                </a>
+                <a id="facebook-link-btn" @click="shareFacebook()">
+                  <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yG/r/pENh3y_2Pnw.png" alt="페이스북">
+                </a>
+                <a id="naver-link-btn" @click="shareNaver()">
+                    <img src="../assets/images/naver_square_40x40.png" alt="네이버">
+                </a>
             </div>
         </div>
         <div class="url-box">
-            <input type="text" v-model="urlToShare" ref="urlInput" style="color: #007bff; margin-right: 1%;">
-            <button style="width: 5vw;" @click="copyUrl">URL 복사</button>
-        </div>    
+            <input type="text" v-model="urlToShare" ref="urlInput" style="color: #007bff; margin-right: 1%;" readonly>
+            <button style="width: 4vw;" @click="copyUrl">URL 복사</button>
+        </div>
     </div>
 </template>
 
@@ -32,7 +38,6 @@ export default {
     created() {
         // 컴포넌트가 생성될 때, 부모 컴포넌트로부터 게시물 ID를 전달받아 URL을 생성
         this.generateUrl(this.$route.params.id);
-
     },
     methods: {
         generateUrl(postId) {
@@ -45,24 +50,53 @@ export default {
             inputElement.select(); // 텍스트를 선택
             document.execCommand('copy'); // 복사 명령 실행
         },
-        // shareKakao() {
-        //     if (!Kakao.isInitialized()) {
-        //         Kakao.init('[3aa989b72e924de0557fc0777a694434]');
-        //     }
-            
-        //     let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
-        //     Kakao.Link.sendDefault({
-        //         objectType: 'feed',
-        //         content: {
-        //           title: `${this.selectedCard.title}`,
-        //           description: '펫 퍼블릭(PETPUBLIC)의 게시글을 확인해보세요!',
-        //           imageUrl: '',
-        //           link: {
-        //             webUrl: `${baseUrl}/freeboard3/get/${this.selectedCard.id}`,
-        //           },
-        //         }
-        //     });
-        // }
+        shareKakao() {
+            if (!Kakao.isInitialized()) {
+                Kakao.init('3aa989b72e924de0557fc0777a694434');
+            }
+            let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
+            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`;
+            Kakao.Link.sendDefault({
+                objectType: 'feed',
+                content: {
+                  title: `${this.selectedCard.title}`,
+                  description: `펫 퍼블릭(PETPUBLIC)\n${this.selectedCard.writer}의 게시글을 확인해보세요!`,
+                  imageUrl: `https://k.kakaocdn.net/dn/iQCSz/btsGlgUVaHx/LK3h7KPGBDxuW8k15b4xs1/kakaolink40_original.png`,
+                  link: {
+                    mobileWebUrl: this.urlToShare,
+                    webUrl: this.urlToShare,
+                  },
+                },
+                social: {
+                    likeCount: this.selectedCard.likeCount,
+                    commentCount: this.selectedCard.commentCount,
+                    viewCount: this.selectedCard.viewCount
+                },
+                buttons: [
+                  {
+                    title: '페이지로 이동',
+                    link: {
+                      mobileWebUrl: this.urlToShare,
+                      webUrl: this.urlToShare,
+                    },
+                  },
+                ],
+                installTalk: true,
+            });
+        },
+        shareFacebook() {
+            const title = `${this.selectedCard.title}`;
+	        let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
+            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`;
+	        window.open("http://www.facebook.com/sharer/sharer.php?u=" +this.urlToShare+ "&title=" +title);
+        },
+        shareNaver() {
+            var title = `${this.selectedCard.title}`;
+            let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
+            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`;
+            var shareURL = "https://share.naver.com/web/shareView?url=" +this.urlToShare+ "&title=" + title;
+            document.location = shareURL;
+        }
     }
 }
 </script>
@@ -118,10 +152,24 @@ h1 {
     top: 8%; /* 상단에서부터의 거리 */
 }
 
-/* #kakao-link-btn img {
+#kakao-link-btn img {
   width: 40px;
   height: auto; 
-} */
+}
+#facebook-link-btn {
+    margin-left: 20px;
+}
+#facebook-link-btn img {
+  width: 40px;
+  height: auto;
+}
+#naver-link-btn {
+    margin-left: 20px;
+}
+#naver-link-btn img {
+  width: 40px;
+  height: auto; 
+}
 
 .url-box {
     position: absolute; 
