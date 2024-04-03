@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kitri.web_project.mappers.PetMapper">
+
+    <insert id="addPet" useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.pet.RequestPet">
+        INSERT INTO pet (user_id, img_path, name, age, weight, species, spec_species, gender, disease, recog_chip, pet_color)
+        VALUES (#{userId}, #{petImg}, #{petName}, #{petAge}, #{petWeight}, #{species}, #{spec_species}, #{petGender}, #{petDisease}, #{petRecog_chip}, #{petColor})
+    </insert>
+
+    <select id="getImages" parameterType="long" resultType="string">
+        select img_path from pet
+        where user_id = #{id}
+    </select>
+
+    <select id="getPetImages" parameterType="long" resultType="string">
+        select img_path from pet
+        where id = #{petId}
+    </select>
+
+    <sql id="responsePet">
+        id, species, age, weight, disease, name, gender, spec_species as specSpecies, recog_chip as recogChip, img_path as img
+    </sql>
+
+    <select id="getPet" resultType="com.kitri.web_project.dto.PetInfo" parameterType="long">
+        SELECT <include refid="responsePet" /> FROM pet where id = #{petId}
+    </select>
+
+    <update id="updatePet" parameterType="com.kitri.web_project.dto.pet.UpdatePet">
+        UPDATE pet
+        SET name = #{petName}, age = #{petAge}, weight = #{petWeight}, img_path = #{petImg}, spec_species = #{spec_species}, disease = #{petDisease}, recog_chip = #{petRecog_chip}
+        WHERE id = #{petId}
+    </update>
+
+    <update id="updatePet2" parameterType="com.kitri.web_project.dto.pet.UpdatePet">
+        UPDATE pet
+        SET name = #{petName}, age = #{petAge}, weight = #{petWeight}, spec_species = #{spec_species}, disease = #{petDisease}, recog_chip = #{petRecog_chip}
+        WHERE id = #{petId}
+    </update>
+
+    <delete id="deletePet" parameterType="long">
+        DELETE FROM pet where id = #{petId};
+    </delete>
+
+    <select id="getDiary" parameterType="long" resultType="com.kitri.web_project.dto.pet.getPetDiary">
+        SELECT
+            pd.title AS title,
+            pd.created_at AS createdAt,
+            pd.id AS diaryId,
+            (SELECT di.img_path FROM diary_img di WHERE di.diary_id = pd.id LIMIT 1) AS imgPath,
+    p.name AS petName
+        FROM
+            pet_diary pd
+            JOIN
+            pet p ON pd.pet_id = p.id
+        WHERE
+            pd.pet_id = #{petId};
+    </select>
+
+</mapper>

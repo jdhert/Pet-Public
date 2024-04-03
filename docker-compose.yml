@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  front_end:
+    image: front_end:latest
+    ports:
+      - "3000:80"
+    volumes:
+      - D:/imageStore:/usr/share/nginx/html/images
+      - D:/imageStore:/app/images
+  back_end:
+    image: back_end:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_USERNAME=pet
+      - SPRING_DATASOURCE_PASSWORD=mypetsite
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_DATASOURCE_URL=jdbc:mysql://14.36.28.176:3306/DBpet?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      - FRONTEND_URL=http://localhost:3000
+    volumes:
+      - D:/imageStore:/app/images

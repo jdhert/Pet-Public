@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kitri.web_project.mappers.BoardMapper">
+    <sql id="responseColumns">
+        title, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category
+    </sql>
+
+    <select id="getBoards" parameterType="int" resultType="com.kitri.web_project.dto.board.BoardInfo">
+        select free_board.id as id, <include refid="responseColumns" />,
+               free_board.user_id as userId,
+        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
+        nick_name as writer,
+        user.img_path as userImg
+        from free_board join user on user.id = user_id
+        WHERE subject = #{subject}
+        order by created_at desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getPopularBoards"  resultType="com.kitri.web_project.dto.board.BoardInfo">
+        SELECT free_board.id, <include refid="responseColumns" />, user_id as userId, nick_name as writer, user.img_path as userImg
+        FROM free_board join user on user_id = user.id
+        WHERE subject = #{subject} AND created_at >= DATE(NOW()) - INTERVAL
+        <choose>
+            <when test="interval == '7 DAY'">7 DAY</when>
+            <when test="interval == '1 MONTH'">1 MONTH</when>
+            <when test="interval == '1 YEAR'">1 YEAR</when>
+            <otherwise>100 YEAR</otherwise>
+        </choose>
+        ORDER BY like_count DESC, view_count DESC
+        LIMIT 3
+    </select>
+
+    <insert id="uploadBoard"   useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.board.RequestBoard">
+        INSERT INTO free_board (user_id, content, title, category, subject)
+        VALUES (#{userId}, #{content}, #{title}, #{category}, #{subject})
+    </insert>
+
+    <select id="getSearchBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.board.BoardInfo">
+        SELECT free_board.id as id, <include refid="responseColumns" />,
+        free_board.user_id as userId,
+        (SELECT COUNT(*)
+        FROM free_board
+        JOIN user ON user.id = user_id
+        <if test="type == 'tag'">
+            JOIN board_tag ON board_tag.board_id = free_board.id
+        </if>
+        WHERE subject = #{subject}
+        <choose>
+            <when test="type == 'content'">
+                AND content LIKE #{search}
+            </when>
+            <when test="type == 'tag'">
+                AND board_tag.tag LIKE #{search}
+            </when>
+            <when test="type == 'title'">
+                AND title LIKE #{search}
+            </when>
+            <when test="type == 'writer'">
+                AND nick_name LIKE #{search}
+            </when>
+        </choose>) AS totalRowCount,
+        nick_name as writer,
+        user.img_path as userImg
+        FROM free_board join user on user.id = user_id
+        <if test="type == 'tag'">
+            JOIN board_tag ON board_tag.board_id = free_board.id
+        </if>
+        WHERE subject = #{subject}
+        <choose>
+            <when test="type == 'content'">
+                AND content LIKE #{search}
+            </when>
+            <when test="type == 'tag'">
+                AND board_tag.tag LIKE #{search}
+            </when>
+            <when test="type == 'title'">
+                AND title LIKE #{search}
+            </when>
+            <when test="type == 'writer'">
+                AND nick_name LIKE #{search}
+            </when>
+        </choose>
+        <if test="type1 == 'Latest'">
+            ORDER BY created_at DESC
+        </if>
+        <if test="type1 == 'Oldest'">
+            ORDER BY created_at ASC
+        </if>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <update id="updateViewCount" parameterType="long">
+        UPDATE DBpet.free_board
+        SET view_count = view_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.board.BoardInfo">
+        SELECT fb.id, fb.title, fb.created_at AS createdAt, fb.content, fb.view_count AS viewCount, fb.comment_count AS commentCount, fb.like_count AS likeCount, fb.category, fb.user_id AS userId, u.nick_name AS writer, u.img_path AS userImg
+        FROM free_board fb
+        JOIN user u ON fb.user_id = u.id
+        WHERE fb.id = #{id}
+    </select>
+
+
+    <insert id="setTag"  parameterType="com.kitri.web_project.dto.board.TagSet">
+        INSERT INTO board_tag (board_id, tag)
+        VALUES (#{id}, #{tag})
+    </insert>
+
+
+    <select id="getTags" parameterType="long" resultType="string">
+        select tag from board_tag
+        WHERE board_id = #{id};
+    </select>
+
+
+    <update id="updateBoard" parameterType="com.kitri.web_project.dto.board.UpdateBoard">
+        update free_board set title = #{title}, content = #{content}, category = #{category}, created_At = now() where id = #{boardId}
+    </update>
+
+    <delete id="deleteBoard" >
+        DELETE FROM free_board, free_board_comment, free_board_comment_like, free_board_like
+        USING free_board
+        LEFT JOIN free_board_comment ON free_board.id = free_board_comment.board_id
+        LEFT JOIN free_board_comment_like ON free_board_comment.id = free_board_comment_like.comment_id
+        LEFT JOIN free_board_like ON free_board.id = free_board_like.board_id
+        WHERE free_board.id = #{id}
+    </delete>
+
+    <delete id="deleteAllImgs">
+        DELETE FROM free_board_img
+        WHERE board_id = #{id}
+    </delete>
+
+    <select id="totalViewCount" parameterType="long">
+        SELECT view_count FROM DBpet.free_board WHERE id = #{id}
+    </select>
+
+
+    <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.board.BoardInfo">
+        SELECT free_board.id AS id, <include refid="responseColumns" />,
+                free_board.user_id AS userId,
+                (SELECT COUNT(*) FROM free_board WHERE subject = #{subject} AND user_id = #{id}) AS totalRowCount,
+                nick_name AS writer
+        FROM free_board
+        JOIN user ON user.id = user_id
+        WHERE subject = #{subject} AND user.id = #{id}
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{itemsPerPage}
+    </select>
+
+
+    <delete id="deleteTags" parameterType="long">
+        delete from board_tag where board_id = #{id}
+    </delete>
+
+    <update id="incrementLikeCount" parameterType="long">
+        UPDATE free_board SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementLikeCount" parameterType="long">
+        UPDATE free_board SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="incrementCommentLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementCommentLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
+
+
+    <insert id="setImage"  parameterType="com.kitri.web_project.dto.image.RequestImage">
+        INSERT INTO free_board_img (user_id, board_id, img_path)
+        VALUES (#{id}, #{boardId}, #{imagePath})
+    </insert>
+
+
+    <select id="getImages" parameterType="long" resultType="string">
+        select img_path from free_board_img
+        where board_id = #{id}
+    </select>
+
+<!--    <select id="checkLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="int">-->
+<!--        SELECT EXISTS (-->
+<!--            SELECT 1 FROM free_board_like-->
+<!--            WHERE user_id = #{userId} AND board_id = #{boardId}-->
+<!--        ) AS likeExists;-->
+<!--    </select>-->
+
+    <select id="checkLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS likeExists
+        FROM free_board_like
+        WHERE user_id = #{userId} AND board_id = #{boardId}
+    </select>
+
+    <insert id="insertLike" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
+        INSERT INTO free_board_like (user_id, board_id)
+        VALUES (#{userId}, #{boardId})
+    </insert>
+
+    <delete id="deleteLike" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
+        DELETE FROM free_board_like
+        WHERE user_id = #{userId} AND board_id = #{boardId}
+    </delete>
+
+<!--    <select id="getPostLikeStatus" parameterType="Long" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 AS likeStatus-->
+<!--        FROM free_board_like-->
+<!--        WHERE board_id = #{boardId}-->
+<!--    </select>-->
+    <select id="getPostLikeStatus" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="boolean">
+        SELECT COUNT(*) > 0 AS likeStatus
+        FROM free_board_like
+        WHERE user_id = #{userId} AND board_id = #{boardId}
+    </select>
+
+    <select id="getMyLike" resultType="com.kitri.web_project.dto.board.BoardInfo">
+        select fb.id as id, fb.title as title, fb.view_count as viewCount, fb.like_count as likeCount, fb.comment_count as commentCount
+        , (select count(*) from free_board join  free_board_like on free_board.id = free_board_like.board_id where free_board_like.user_id = #{id}) as totalRowCount
+        from free_board as fb join free_board_like as fbl on fb.id = fbl.board_id
+            where fbl.user_id = #{id}
+        limit #{page}, 10
+    </select>
+
+
+    <select id="getBoardImage" parameterType="long" resultType="com.kitri.web_project.dto.image.RequestImage">
+        select img_path as imagePath, id as id from free_board_img where board_id = #{id}
+    </select>
+
+    <delete id="deleteImageById" parameterType="Long">
+        DELETE FROM free_board_img where id = #{id};
+    </delete>
+
+
+</mapper>

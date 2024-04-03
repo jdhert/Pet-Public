@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kitri.web_project.mappers.ApiMapper">
+
+    <select id="getNearBy" parameterType="double" resultType="com.kitri.web_project.dto.api.DataItem">
+        SELECT
+            *,
+            ST_Distance_Sphere(
+                    point(longitude, latitude),
+                    point(#{longitude}, #{latitude})
+            ) AS distance
+        FROM
+            pet_api
+        ORDER BY
+            distance ASC
+            LIMIT
+            10;
+    </select>
+
+    <select id="getMaxPage" resultType="int">
+        select count(*) from pet_api where category3 like #{category} and city_name like #{city}
+                                       and facility_name like #{search}
+    </select>
+
+    <select id="getList" resultType="com.kitri.web_project.dto.api.DataItem">
+        select * from pet_api where category3 like #{category} and city_name like #{city}
+                                and facility_name like #{search} limit #{page}, 10;
+    </select>
+
+    <select id="findBookmark" resultType="com.kitri.web_project.dto.api.BookMarks">
+        SELECT id
+        FROM bookmark
+        WHERE user_id = #{userId} AND place_id = #{placeId};
+    </select>
+
+    <insert id="bookmarks" parameterType="com.kitri.web_project.dto.api.BookMarks">
+        INSERT INTO bookmark (user_id, place_id)
+        VALUES (#{userId}, #{placeId})
+    </insert>
+
+    <insert id="unbookmarks" parameterType="com.kitri.web_project.dto.api.BookMarks">
+        DELETE FROM bookmark
+        WHERE id = #{id};
+    </insert>
+
+</mapper>
