@@ -99,60 +99,15 @@ public class CommentController {
 
     @PostMapping("/liked")
     public boolean commentLiked(@RequestBody RequestCommentLike requestCommentLike) {
-        long userId = requestCommentLike.getUserId();
-        long boardId = requestCommentLike.getBoardId();
-        long commentId = requestCommentLike.getCommentId();
         try {
-            if (requestCommentLike.getLiked()) {
-                boolean recordExists = commentMapper.checkCommentLikeExists(userId, boardId, commentId);
-                if (!recordExists) {
-                    commentMapper.insertCommentLike(userId, boardId, commentId);
-                }
-                return true;
-            } else {
-                commentMapper.deleteCommentLike(userId, boardId, commentId);
+            boolean likeExists = commentMapper.checkCommentLikeExists(requestCommentLike); // 좋아요가 이미 존재하는지 확인
+            if (likeExists) { // 좋아요가 이미 존재하는 경우
+                commentMapper.deleteCommentLike(requestCommentLike); //좋아요 취소
                 return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @GetMapping("/{id}/likeStatus")
-    public boolean getCommentLikeStatus(@PathVariable("id") Long commentId) {
-        try {
-            return commentMapper.getCommentLikeStatus(commentId);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    @PostMapping("/replyLiked")
-    public boolean replyLiked(@RequestBody RequestCommentLike requestCommentLike) {
-        long userId = requestCommentLike.getUserId();
-        long boardId = requestCommentLike.getBoardId();
-        long commentId = requestCommentLike.getCommentId();
-        boolean liked = requestCommentLike.getLiked();
-
-        try {
-            boolean alreadyLiked = commentMapper.checkReplyLikeExists(userId, boardId, commentId);
-            if (alreadyLiked && liked) {
+            } else { // 좋아요가 존재하지 않는 경우
+                commentMapper.insertCommentLike(requestCommentLike); // 좋아요 추가
                 return true;
             }
-            else if (!alreadyLiked && !liked) {
-                return false;
-            }
-
-            if (liked) {
-                commentMapper.insertReplyLike(userId, boardId, commentId);
-            } else {
-                commentMapper.deleteReplyLike(userId, boardId, commentId);
-            }
-            return liked;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -160,16 +115,72 @@ public class CommentController {
     }
 
 
-    @GetMapping("/{id}/replyLikeStatus")
-    public boolean getReplyLikeStatus(@PathVariable("id") Long replyId) {
-        try {
-            return commentMapper.getReplyLikeStatus(replyId);
+@GetMapping("/{userId}/{commentId}/likeStatus")
+public boolean getCommentLikeStatus(@PathVariable("userId") Long userId, @PathVariable("commentId") Long commentId) {
+    try {
+        RequestCommentLike requestCommentLike = new RequestCommentLike();
+        requestCommentLike.setUserId(userId);
+        requestCommentLike.setCommentId(commentId);
+        boolean commentLiked = commentMapper.getCommentLikeStatus(requestCommentLike);
+        return commentLiked;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
     }
+}
+
+//    @GetMapping("/{id}/likeStatus")
+//    public boolean getCommentLikeStatus(@PathVariable("id") Long commentId) {
+//        try {
+//            return commentMapper.getCommentLikeStatus(commentId);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
+
+//    @PostMapping("/replyLiked")
+//    public boolean replyLiked(@RequestBody RequestCommentLike requestCommentLike) {
+//        long userId = requestCommentLike.getUserId();
+//        long boardId = requestCommentLike.getBoardId();
+//        long commentId = requestCommentLike.getCommentId();
+//        boolean liked = requestCommentLike.getLiked();
+//
+//        try {
+//            boolean alreadyLiked = commentMapper.checkReplyLikeExists(userId, boardId, commentId);
+//            if (alreadyLiked && liked) {
+//                return true;
+//            }
+//            else if (!alreadyLiked && !liked) {
+//                return false;
+//            }
+//
+//            if (liked) {
+//                commentMapper.insertReplyLike(userId, boardId, commentId);
+//            } else {
+//                commentMapper.deleteReplyLike(userId, boardId, commentId);
+//            }
+//            return liked;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+//
+
+//    @GetMapping("/{id}/replyLikeStatus")
+//    public boolean getReplyLikeStatus(@PathVariable("id") Long replyId) {
+//        try {
+//            return commentMapper.getReplyLikeStatus(replyId);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
     //게시글의 총 댓글 수
     @GetMapping("/totalCount")

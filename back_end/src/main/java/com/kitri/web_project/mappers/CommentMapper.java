@@ -2,6 +2,7 @@ package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.comment.RequestComment;
+import com.kitri.web_project.dto.comment.RequestCommentLike;
 import com.kitri.web_project.dto.comment.RequestReplyComment;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,18 +29,20 @@ public interface CommentMapper {
 
     int childCount(long id);
 
-    boolean checkCommentLikeExists(long userId, long boardId, long commentId);
-    boolean insertCommentLike(long userId, long boardId, long commentId);
-    boolean deleteCommentLike(long userId, long boardId, long commentId);
+//    boolean checkCommentLikeExists(long userId, long boardId, long commentId);
+//    boolean insertCommentLike(long userId, long boardId, long commentId);
+//    boolean deleteCommentLike(long userId, long boardId, long commentId);
+//
+//    boolean getCommentLikeStatus(Long commentId);
 
-    boolean getCommentLikeStatus(Long commentId);
+
+    boolean checkCommentLikeExists(RequestCommentLike requestCommentLike);
+    boolean insertCommentLike(RequestCommentLike requestCommentLike);
+    boolean deleteCommentLike(RequestCommentLike requestCommentLike);
+
+    boolean getCommentLikeStatus(RequestCommentLike requestCommentLike);
 
 
-    boolean checkReplyLikeExists(long userId, long boardId, long commentId);
-    boolean insertReplyLike(long userId, long boardId, long commentId);
-    boolean deleteReplyLike(long userId, long boardId, long commentId);
-
-    boolean getReplyLikeStatus(Long replylId);
 
     int getTotalCommentCount(long boardId);
 
