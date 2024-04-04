@@ -74,9 +74,9 @@ PETPUBLIC은 반려동물과 함께하는 일상을 기록하고, 동반 가능�
 💛 https://pet-public.xyz 💛
 
 # 5. Authors 🍀
-- 🤠 박세한 [팀장] @[jdhert](https://github.com/jdhert)
-- 👩 김미성 @[kimmisung](https://github.com/kimmisung)
-- 😴 박현오 @[han7828](https://github.com/han7828)
-- 🧐 오시현 @[Oh-Sihyeon](https://github.com/Oh-Sihyeon)
-- 😆 주나영 @[nayoung0202](https://github.com/nayoung0202)
+- 🤠 박세한 [팀장] [jdhert](https://github.com/jdhert)
+- 👩 김미성 [kimmisung](https://github.com/kimmisung)
+- 😴 박현오 [han7828](https://github.com/han7828)
+- 🧐 오시현 [Oh-Sihyeon](https://github.com/Oh-Sihyeon)
+- 😆 주나영 [nayoung0202](https://github.com/nayoung0202)
 <img src="https://capsule-render.vercel.app/api?type=waving&color=D2F7FF&height=150&section=footer" />
