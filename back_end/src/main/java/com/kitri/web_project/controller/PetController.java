@@ -27,7 +27,11 @@ public class PetController {
     @Autowired
     private PetMapper petMapper;
 
-    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+    private static final String frontendUrl = "http://localhost:3000";
+//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+
+    private static final String uploadRootPath = "D:/imageStore";
+//    private static final String uploadRootPath = "/app/images";
 
     @PostMapping
     public void addPet(@RequestBody RequestPet pet) {
@@ -40,12 +44,6 @@ public class PetController {
         List<String> imageUrls = images.stream()
                 .map(path -> frontendUrl + "/images/" + path)
                 .collect(Collectors.toList());
-//                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(path)
-//                        .toUriString())
-//                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
-//                .collect(Collectors.toList());
         return ResponseEntity.ok(imageUrls);
     }
 
@@ -55,12 +53,6 @@ public class PetController {
         List<String> imageUrls = images.stream()
                 .map(path -> frontendUrl + "/images/" + path)
                 .collect(Collectors.toList());
-//                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(path)
-//                        .toUriString())
-//                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
-//                .collect(Collectors.toList());
         return ResponseEntity.ok(imageUrls);
     }
 
@@ -101,7 +93,6 @@ public class PetController {
     public void RequestDiary(@PathVariable long petId) {
         String imgPath = String.valueOf(petMapper.getPetImages(petId));
         petMapper.deletePet(petId);
-        String uploadRootPath = "/app/images";
         String fullPath = uploadRootPath + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
@@ -123,7 +114,6 @@ public class PetController {
     @GetMapping("/getDiary/{petId}")
     public List<getPetDiary> getDiary(@PathVariable long petId){
         List<getPetDiary> getPetDiaryList = petMapper.getDiary(petId);
-
 
         List<String> decodedImageUrls = getPetDiaryList.stream()
                 .map(getdiaryImage -> decodeImageUrl(getdiaryImage.getImgPath()))

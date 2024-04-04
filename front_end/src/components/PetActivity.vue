@@ -22,7 +22,7 @@
       <div class="carousel-items" ref="recommendCarousel">
         <div v-for="product of this.products2" :key="product" class="product" @click.prevent="openModal(product)">
           <div class="product-image">
-            <img :src="getProxyImageUrl(product.img)" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="준비중">
+            <img :src="product.img" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="준비중">
           </div>
           <div class="product-info">
             <h3>{{ product.시설명 }}</h3>
@@ -84,7 +84,7 @@
       <div class="carousel-items" ref="itemsCarousel">
         <div v-for="product in this.products" :key="product" class="product" @click.prevent="openModal(product)">
           <div class="product-image">
-            <img :src="getProxyImageUrl(product.img)" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="준비중">
+            <img :src="product.img" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="준비중">
           </div>
           <div class="product-info">
             <h3>{{ product.시설명 }}</h3>
@@ -237,9 +237,6 @@ export default {
   await this.getList();
 },
  methods: {
-  getProxyImageUrl(imageUrl) {
-    return '/proxy-image/?url=' + encodeURIComponent(imageUrl);
-  },
     openModal(card){
       this.place = card;
       this.showModal = true;
@@ -259,28 +256,28 @@ export default {
           headers: {
             Authorization : 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
           }
-        })
+        });
 
-        const isProductExist = this.products2.find(product => product.시설명 === item.시설명);
-        
-        if(isProductExist){
-          for(i = 1; i < res.data.documents.length; i++){
-            if(res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile") ){
-              this.imgSet = res.data.documents[i].image_url;
-              this.thumbNail.push(res.data.documents[i].thumbnail_url);
-              break;
-            }
-          }
-        } else {    
-          for(i = 0; i < res.data.documents.length; i++){ 
-            if(res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile")){
-              this.imgSet = res.data.documents[i].image_url;
-              this.thumbNail.push(res.data.documents[i].thumbnail_url);
-              break;
-            }
+        let imageIndex = 0;
+        const existingItems = this.products2.filter(product => product.시설명 === item.시설명);
+
+        if (existingItems.length > 0) {
+          imageIndex = existingItems.length;
+        }
+      
+        let imageFound = false;
+        for (let i = imageIndex; i < res.data.documents.length; i++) {
+          if (res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile")) {
+            item.img = res.data.documents[i].image_url;
+            this.thumbNail.push(res.data.documents[i].thumbnail_url);
+            imageFound = true;
+            break;
           }
         }
-        item.img = this.imgSet;
+      
+        if (!imageFound) {
+          item.img = this.imgSet;
+        }
         this.products2.push(item);
       }
     },
@@ -303,27 +300,31 @@ export default {
           headers: {
             Authorization : 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
           }
-        })
+        });
 
-        const isProductExist = this.products.find(product => product.시설명 === item.시설명);
-        
-        if(isProductExist){
-          for(i = 1; i < res.data.documents.length; i++){
-            if(res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile") ){
-              this.imgSet = res.data.documents[i].image_url;
-              break;
-            }
-          } 
-        } else {
-          for(i = 0; i < res.data.documents.length; i++){ 
-            if(res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile") ){
-              this.imgSet = res.data.documents[i].image_url;
-              break;
-            }
+        let imageIndex = 0;
+        const existingItems = this.products.filter(product => product.시설명 === item.시설명);
+            
+        if (existingItems.length > 0) {
+          imageIndex = existingItems.length;
+        }
+      
+        let imageFound = false;
+        for (let i = imageIndex; i < res.data.documents.length; i++) {
+          if (res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile")) {
+            item.img = res.data.documents[i].image_url;
+            this.thumbNail.push(res.data.documents[i].thumbnail_url);
+            imageFound = true;
+            break;
           }
-        }; 
-        item.img = this.imgSet;
+        }
+      
+        if (!imageFound) {
+          item.img = this.imgSet;
+        }
+      
         this.products.push(item);
+    
       }
     },
     getPageNumbers() {
@@ -405,6 +406,8 @@ export default {
              } 
             else {
               let facilityInfo = this.nearBy[index-1];
+              if(facilityInfo.홈페이지 == '정보없음')
+                facilityInfo.홈페이지 = "not_found";
               let content = `
                   <div class="wrap" id="overlay${index}">
                       <div class="info">

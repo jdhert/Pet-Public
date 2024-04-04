@@ -33,7 +33,11 @@ public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+    private static final String frontendUrl = "http://localhost:3000";
+//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+
+    private static final String uploadRootPath = "D:/imageStore";
+//    private static final String uploadRootPath = "/app/images";
 
     @Autowired
     public UserInfoController(UserInfoService userInfoService){
@@ -51,10 +55,6 @@ public class UserInfoController {
 
         String imgPath = userMapper.getUserImages(userUpdateInfo.getUserId());
         userMapper.updateUser(userUpdateInfo);
-//        String currentDir = System.getProperty("user.dir");
-//        Path parentDir = Paths.get(currentDir).getParent();
-//        String uploadRootPath  = parentDir.resolve("images").toString();
-        String uploadRootPath = "/app/images";
         String fullPath = uploadRootPath + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
@@ -93,7 +93,6 @@ public class UserInfoController {
         String imgPath = userMapper.getUserImages(id);
         userMapper.deleteUser(id);
 
-        String uploadRootPath = "/app/images";
         String fullPath = uploadRootPath + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
