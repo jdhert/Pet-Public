@@ -35,27 +35,48 @@ PETPUBLIC은 반려동물과 함께하는 일상을 기록하고, 동반 가능�
 ![localhost_3000_mypage (2)](https://github.com/jdhert/pet-public12/assets/106420689/b87960cb-77a6-4ba3-9d5e-11d9a9aa3767)
 
 # 2. 기술스택
-- IDE
-  <img src="https://img.shields.io/badge/Intellij-000000?style=flat&logo=intellijidea&logoColor=white" />
-- Back End
-  <img src="https://img.shields.io/badge/Java-3766AB?style=flat-square&logo=Java&logoColor=white"/>
+- IDE <br/>
+  <img src="https://img.shields.io/badge/Intellij IDEA-000000?style=flat&logo=intellijidea&logoColor=white" />
+- Back End <br/>
+  <img src="https://img.shields.io/badge/JAVA17-FF9100?style=flat&logoColor=white" />
   <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=spring&logoColor=white"/>
-- Data
+- Data <br/>
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-- Front End
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-- Depolyment
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-- Version Control
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-- Design
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-- Community
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white" />
-# 3. API
+  <img src="https://img.shields.io/badge/MYBATIS-000000?style=flat&logoColor=white" />
+- Front End <br/>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/JAVASCRIT-F7DF1E?style=flat&logo=javascript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=flat&logo=vuedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=bootstrap&logoColor=white" />
+  <img src="https://img.shields.io/badge/jQuery-0769AD?style=flat&logo=jquery&logoColor=white" />
+- Version Control <br/>
+  <img src="https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white" />
+  <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white" />
+  <img src="https://img.shields.io/badge/Sourcetree-0052CC?style=flat&logo=sourcetree&logoColor=white" />
+- Design <br/>
+  <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Python&logoColor=white" />
+- Tools <br/>
+  <img src="https://img.shields.io/badge/Jira-0052CC?style=flat&logo=figma&logoColor=white" />
+  <img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=slack&logoColor=white" />
+- API <br/>
+  <img src="https://img.shields.io/badge/Naver-03C75A?style=flat&logo=naver&logoColor=white" />
+  <img src="https://img.shields.io/badge/KaKao-FFCD00?style=flat&logo=kakao&logoColor=white" />
+  <img src="https://img.shields.io/badge/Google-4285F4?style=flat&logo=google&logoColor=white" />
+- Depolyment <br/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/Oracle-F80000?style=flat&logo=oracle&logoColor=white" />
+  
+# 3. API 🐱
+# [PETPUBLIC_API 바로가기](https://docs.google.com/spreadsheets/d/1gMJ9rlFeqWfEmgBWGMOSXD77nl94u65oLYiIHuPNWO4/edit?usp=sharing)
 
-# 4. 배포
-💙 https://pet-public.xyz 💙
+# 4. 배포 🐱
+💛 https://pet-public.xyz 💛
+
+# 5. Authors 🍀
+- 🤠 박세한 [팀장] @[jdhert](https://github.com/jdhert)
+- 👩 김미성 @[kimmisung](https://github.com/kimmisung)
+- 😴 박현오 @[han7828](https://github.com/han7828)
+- 🧐 오시현 @[Oh-Sihyeon](https://github.com/Oh-Sihyeon)
+- 😆 주나영 @[nayoung0202](https://github.com/nayoung0202)
 <img src="https://capsule-render.vercel.app/api?type=waving&color=D2F7FF&height=150&section=footer" />
