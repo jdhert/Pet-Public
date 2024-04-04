@@ -142,7 +142,7 @@
 
     <update id="updateUser" parameterType="com.kitri.web_project.dto.UserUpdateInfo">
         UPDATE user
-        SET email = #{email}, nick_name = #{name}, img_path = #{imgPath}, address = #{address}
+        SET nick_name = #{name}, img_path = #{imgPath}, address = #{address}
         WHERE id = #{userId}
     </update>
 
@@ -181,5 +181,12 @@
         select count(*) from pet_diary where user_id = #{id}
     </select>
 
+    <select id="duplicateCheck" resultType="java.lang.String">
+        select nick_name from user where id != #{id} and nick_name like #{name}
+    </select>
+
+    <select id="checkEmail" resultType="java.lang.String">
+        select email from user where email like #{email} and social = false
+    </select>
 </mapper>
 

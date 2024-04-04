@@ -161,7 +161,7 @@ export default {
         
         this.naverLogin = new window.naver.LoginWithNaverId({
             clientId: "hxXy5oDjkXc5qMctxsf7", // 개발자센터에 등록된 ClientID
-            callbackUrl: "http://localhost:3000/login",   // 개발자센터에 등록한 callback Url
+            callbackUrl: "https://pet-public.xyz/login",   // 개발자센터에 등록한 callback Url
             isPopup: true, // 팝업을 통한 연동처리 여부
             loginButton:{
                 color: "green", type:3, width : 190, height: 40},  // 로그인 버튼의 타입을 지정
