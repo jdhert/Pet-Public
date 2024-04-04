@@ -3,6 +3,10 @@
 
 <mapper namespace="com.kitri.web_project.mappers.UserMapper">
 
+    <select id="nameCheck" resultType="long">
+        select id from user where nick_name like #{name}
+    </select>
+
     <insert id="signup">
         INSERT INTO user (email, nick_name, password, address, img_Path, social)
         VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath}, #{social})

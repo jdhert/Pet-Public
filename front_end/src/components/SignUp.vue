@@ -20,9 +20,11 @@
             <div class="input-block">
               <div style="display: flex; align-items: center;">
               <label for="name" style="margin-right: 10px;">닉네임*</label>
-              <button class="postBtn">중복체크</button>
+              <button class="postBtn" @click.prevent="duplicateVerify" v-if="!this.duplicateCheck" >중복체크</button>
+              <button class="postBtn" @click.prevent="this.duplicateCheck = false" v-if="this.duplicateCheck" >닉네임변경</button>
               </div>
-              <input type="text" id="name" placeholder="닉네임을 입력해주세요." v-model="name" required>
+              <input type="text" id="name" v-if="!this.duplicateCheck" placeholder="닉네임을 입력해주세요." v-model="name" required>
+              <input type="text" id="name" v-if="this.duplicateCheck" v-model="name" readonly>
             </div>
 
             <div class="input-block">
@@ -45,7 +47,7 @@
               <div class="searchAddress d-flex">
                 <div class="d-flex align-items-center">
                   <input class="postcode" type="text" v-model="postcode" placeholder="우편번호">
-                  <input class="postBtn" type="button" @click="execDaumPostcode" value="주소 찾기">
+                  <input class="postBtn" type="button" @click="execDaumPostcode" value="주소찾기">
                 </div>
                 <input class="roadAddress" type="text" v-model="roadAddress" placeholder="도로명주소">
                 <input class="jibunAddress" type="text" v-model="jibunAddress" placeholder="지번주소" style="display: none;">
@@ -62,11 +64,11 @@
             <label for="agree" >이용약관과 개인정보처리방침에 동의합니다.</label>
           </div>
           
-          <div id="loadingIndicator" v-show="delay">
+          <div id="loadingIndicator" v-show="this.delay">
             <img src="../assets/images/loading-activity.gif" alt="로딩 중..."/>
           </div>
           
-          <button type="submit" v-if="!codeVerify" v-show="!delay">회원가입</button>
+          <button type="submit" v-if="!codeVerify" v-show="!this.delay">회원가입</button>
 
           <div>
             <div class="input-block" v-if="codeVerify">
@@ -108,7 +110,8 @@ export default {
       roadAddress: '',
       jibunAddress: '',
       detailAddress: '',
-      defaultImage: require('../assets/images/plus.png'),        
+      defaultImage: require('../assets/images/plus.png'),
+      duplicateCheck: false,        
     }
   },
   computed:{
@@ -131,6 +134,20 @@ export default {
     this.loadDaumPostcodeScript();
   },
   methods : {
+    duplicateVerify(){
+      this.axios.get(`/api/signup/name_check`, {
+        params: {
+          name: this.name
+        }
+      }).then(res => {
+        if(res.data == true){
+          this.duplicateCheck = true;
+          alert('닉네임이 중복되지 않습니다.');
+        }else{
+          alert('닉네임이 중복됩니다. 다른 닉네임을 사용하세요.');
+        }
+      }).catch();
+    },
     startTimer() {
       this.timeLeft = 180; 
       this.timer = setInterval(() => {
@@ -164,14 +181,16 @@ export default {
       this.timer = null;
     },
     handleSubmit(){
-      this.codeVerify ? this.codeCheck() : this.validateForm();
+      if(this.duplicateCheck)
+        this.codeVerify ? this.codeCheck() : this.validateForm();
+      else alert('닉네임 중복체크 먼저 해주세요!');
     },
     validateForm() {
       this.passwordError = false;
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
       if (!passwordRegex.test(this.password)) {
         this.passwordError = true;
-        this.passwordErrorMessage = '!!! 비밀번호는 최소 8글자 이상이며, 숫자, 대소문자, 특수문자를 포함해야 합니다. !!!';
+        this.passwordErrorMessage = '!!! 비밀번호는 최소 8글자 이상이며, 숫자, 영문 대소문자, 특수문자를 포함해야 합니다. !!!';
         return; 
       }
 
@@ -180,6 +199,8 @@ export default {
         this.passwordErrorMessage = '비밀번호가 일치하지 않습니다.';
         return; 
       }
+
+
       this.delay = true;
       this.axios.get('/api/login/sendCode', {
         params:{
@@ -400,10 +421,12 @@ button{
 }
 
 .postBtn {
-  background-color: #87CEEB; color: white; border: none; padding: 0px 10px; border-radius: 4px; cursor: pointer;
-  /* color: #ffffff;
-  background-color: #a7d3f3;
-  border: 2px solid #b6e0ff; */
+  background-color: #87CEEB; 
+  color: white; 
+  border: none; 
+  padding: 0px 10px; 
+  border-radius: 4px; 
+  cursor: pointer;
 }
 
 .postBtn:hover {
