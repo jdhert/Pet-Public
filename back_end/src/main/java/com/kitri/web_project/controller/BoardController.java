@@ -35,7 +35,12 @@ public class BoardController {
     BoardMapper boardMapper;
 
 
-    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+    private static final String frontendUrl = "http://localhost:3000";
+//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+
+    private static final String uploadRootPath = "D:/imageStore";
+//    private static final String uploadRootPath = "/app/images";
+
 
     private final BoardService boardService;
 
@@ -94,12 +99,6 @@ public class BoardController {
         List<String> imageUrls = images.stream()
                 .map(path -> frontendUrl + "/images/" + path)
                 .collect(Collectors.toList());
-//                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(path)
-//                        .toUriString())
-//                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
-//                .collect(Collectors.toList());
         return ResponseEntity.ok(imageUrls);
     }
 
@@ -136,33 +135,17 @@ public class BoardController {
     @PostMapping(value = "/img", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
     public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles) {
         List<String> s = new ArrayList<>();
-        String uploadRootPath = "/app/images";
-
-
         for (MultipartFile file : imageFiles) {
             try {
                 String originalFilename = file.getOriginalFilename();
                 String uploadFileName = UUID.randomUUID() + "_" + originalFilename;
-
-//                String currentDir = System.getProperty("user.dir");
-//                Path parentDir = Paths.get(currentDir).getParent();
-//                String uploadRootPath  = parentDir.resolve("images").toString();
                 File uploadDir = new File(uploadRootPath);
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs();
                 }
-
-//                File uploadFile = new File(uploadRootPath + File.separator + uploadFileName);
-//                file.transferTo(uploadFile);
-//                String savePath = uploadRootPath.substring(uploadRootPath.length()).replace("\\", "/");
-//                String encodedFileName = URLEncoder.encode(uploadFileName, StandardCharsets.UTF_8);
-//                String s1 = savePath + "/" + encodedFileName;
-//                s.add(s1);
-
                 String filePath = uploadRootPath + "/" + uploadFileName;
                 File dest = new File(filePath);
                 file.transferTo(dest);
-
                 s.add(uploadFileName);
             } catch(IOException e){
                 System.out.println(e);
@@ -182,12 +165,6 @@ public class BoardController {
         List<String> imageUrls = images.stream()
                 .map(path -> frontendUrl + "/images/" + path)
                 .toList();
-//                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(path)
-//                        .toUriString())
-//                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
-//                .toList();
         for (int i = 0; i < imageUrls.size(); i++) {
             imageList.get(i).setImagePath(imageUrls.get(i));
         }

@@ -19,9 +19,7 @@
             </div>
     
             <div class="detail">
-              <img :src="getProxyImageUrl(this.place.img)" 
-       onerror="this.onerror=null; this.src=getProxyImageUrl('https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg')"
-       alt="">
+              <img :src="this.place.img" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="">
                 <div class="info">
                 <h5> 기본 장소 설명 : {{ this.place.basicInfoPlaceDescription }}</h5>
                 <h5>주소 : {{ this.place.도로명주소 }}</h5>
@@ -69,9 +67,6 @@ export default {
     }
   },
   methods: {
-    getProxyImageUrl(imageUrl) {
-    return '/proxy-image/?url=' + encodeURIComponent(imageUrl);
-  },
     checking() {
       if (!this.$cookies.isKey("id")) {
         alert("로그인 후 이용해주세요.")

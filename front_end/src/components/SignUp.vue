@@ -3,8 +3,7 @@
   <div class="main">
     <div class="card">
       <div class="form-container">
-        <!-- <form class="form" @submit.prevent="handleSubmit"> -->
-        <form class="form" @submit.prevent="signUp">
+        <form class="form" @submit.prevent="handleSubmit">
           <div>
             <h1>반갑개<img src="../assets/images/paw1.png" alt="Logo"></h1>
             <p>반려동물 관리 솔루션, 지금 바로 시작해보세요!</p>
@@ -19,7 +18,10 @@
             </div>
 
             <div class="input-block">
-              <label for="name">닉네임*</label>
+              <div style="display: flex; align-items: center;">
+              <label for="name" style="margin-right: 10px;">닉네임*</label>
+              <button class="postBtn">중복체크</button>
+              </div>
               <input type="text" id="name" placeholder="닉네임을 입력해주세요." v-model="name" required>
             </div>
 
@@ -60,8 +62,11 @@
             <label for="agree" >이용약관과 개인정보처리방침에 동의합니다.</label>
           </div>
           
-          <button type="submit" v-if="!codeVerify">회원가입</button>
-
+          <div id="loadingIndicator" v-show="delay">
+            <img src="../assets/images/loading-activity.gif" alt="로딩 중..."/>
+          </div>
+          
+          <button type="submit" v-if="!codeVerify" v-show="!delay">회원가입</button>
 
           <div>
             <div class="input-block" v-if="codeVerify">
@@ -71,6 +76,8 @@
             </div>
             <button type="submit" v-if="codeVerify">코드 확인</button>
           </div>
+
+
         </form>
       </div>  
     </div>
@@ -94,7 +101,7 @@ export default {
       timer: null,
       timeLeft: 180, 
       fileList: [],
-
+      delay : false,
       imgPath: '',
       thumbnail: '',
       postcode: '',
@@ -131,7 +138,7 @@ export default {
           this.timeLeft -= 1;
         } else {
           alert('코드 입력시간 초과!!');
-          window.location.reload();
+          this.$router.push("/login");
         }
       }, 1000);
     },
@@ -144,10 +151,9 @@ export default {
       if (files && files.length > 0) {
         const reader = new FileReader();
         reader.onload = (event) => {
-          this.imgPath = event.target.result; // 썸네일 URL 설정
+          this.imgPath = event.target.result;
         };
-        reader.readAsDataURL(files[0]); // 선택한 파일을 Data URL로 읽기
-        // 파일 리스트에 선택한 파일을 추가합니다.
+        reader.readAsDataURL(files[0]);
         this.fileList.push(files[0]);
       } else {
         console.error("No files selected or unable to read the selected file.");
@@ -174,15 +180,16 @@ export default {
         this.passwordErrorMessage = '비밀번호가 일치하지 않습니다.';
         return; 
       }
+      this.delay = true;
       this.axios.get('/api/login/sendCode', {
         params:{
           email : this.email
         }
       }).then(()=> {
+          this.delay = false;
           alert('이메일로 코드가 발송되었습니다.');
           this.codeVerify = true;
       });
-      // this.signUp();
     },
     codeCheck(){
       this.axios.get('/api/login/codeVerify',{
@@ -190,7 +197,6 @@ export default {
           code : this.code
         }
       }).then((res) => {
-        console.log(res.data)
         if(res.data == true)
           this.signUp();
         else alert('코드를 잘못입력하셨습니다!');
@@ -201,31 +207,49 @@ export default {
         alert("주소를 입력 후 상세주소를 입력해주세요.");
         return;
       }
-      let formData = new FormData();
-      formData.append('image', this.fileList[0]);
-    
-      this.axios.post(`/api/free/img`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then((res) => {
-        for(let s of res.data)
-        this.imgPath = s;
-        this.axios.post(`/api/signup`, {
-          name : this.name,
-          email : this.email,
-          password : this.password,
-          passwordVerify : this.passwordVerify,
-          imgPath : this.imgPath,
-          address : `${this.roadAddress}/${this.detailAddress}`,
-        }).then((res) => {
-          if(res.data == true){
-            alert('회원가입 성공!!');
-            this.$router.push('/login');
+
+      if(this.fileList.length > 0){
+        let formData = new FormData();
+        formData.append('image', this.fileList[0]);
+        
+        this.axios.post(`/api/free/img`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
           }
-          else alert('회원가입 실패하였습니다. 다시 입력해주세요.');
-        }).catch();
-      }).catch();      
+        }).then((res) => {
+          this.imgPath = res.data[0];
+          this.axios.post(`/api/signup`, {
+            name : this.name,
+            email : this.email,
+            password : this.password,
+            passwordVerify : this.passwordVerify,
+            imgPath : this.imgPath,
+            address : `${this.roadAddress}/${this.detailAddress}`,
+          }).then((res) => {
+            if(res.data == true){
+              alert('회원가입 성공!!');
+              this.$router.push('/login');
+            }
+            else alert('회원가입 실패하였습니다. 다시 입력해주세요.');
+          }).catch();
+        }).catch(); 
+      } else {
+        this.axios.post(`/api/signup`, {
+            name : this.name,
+            email : this.email,
+            password : this.password,
+            passwordVerify : this.passwordVerify,
+            imgPath : "",
+            address : `${this.roadAddress}/${this.detailAddress}`,
+          }).then((res) => {
+            if(res.data == true){
+              alert('회원가입 성공!!');
+              this.$router.push('/login');
+            }
+            else alert('회원가입 실패하였습니다. 다시 입력해주세요.');
+          }).catch();
+      }
+      
     },
     // 주소 찾기
     execDaumPostcode() {
@@ -372,12 +396,14 @@ button{
 .postcode {
     display: inline;
     width: 50%;
+    margin-right: 5px
 }
 
 .postBtn {
-  color: #ffffff;
+  background-color: #87CEEB; color: white; border: none; padding: 0px 10px; border-radius: 4px; cursor: pointer;
+  /* color: #ffffff;
   background-color: #a7d3f3;
-  border: 2px solid #b6e0ff;
+  border: 2px solid #b6e0ff; */
 }
 
 .postBtn:hover {

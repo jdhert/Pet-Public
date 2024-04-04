@@ -31,7 +31,7 @@ public class LoginService {
         else{
            String tempPassword =  RandomStringUtils.random(8, true, true);
            userMapper.updatePassword(tempPassword, responseClient.getId());
-           emailService.sendSimpleMessage(responseClient.getEmail(), "petSounds 비밀번호 재설정 메일",
+           emailService.sendSimpleMessage(responseClient.getEmail(), "펫퍼블릭 비밀번호 재설정 메일",
                     "귀하의 임시 비밀번호는 \"" + tempPassword + "\" 입니다.\n" + "꼭 로그인하신 후 비밀번호를 변경하시길 바랍니다.");
            return true;
         }
@@ -39,8 +39,8 @@ public class LoginService {
 
     public void sendCode(String email){
         String verifyCode =  RandomStringUtils.random(8, true, true);
-        emailService.sendSimpleMessage(email, "petSounds 계정 등록",
-                "petSounds 계정을 등록하시는 유저라면 사이트에서 \"" + verifyCode + "\" 등록 코드를 입력해주세요.");
+        emailService.sendSimpleMessage(email, "펫퍼블릭 계정 등록",
+                "펫퍼블릭 계정을 등록하시는 유저라면 사이트에서 \"" + verifyCode + "\" 등록 코드를 입력해주세요.");
         codeList.add(verifyCode);
     }
 
@@ -63,6 +63,8 @@ public class LoginService {
             return responseClient1.getId();
         }
     }
+
+
 
     public void CookieSet(HttpServletResponse response, ResponseClient responseClient){
         Cookie cookie = new Cookie("email", responseClient.getEmail());
