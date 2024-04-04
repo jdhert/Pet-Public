@@ -16,6 +16,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
+    Long nameCheck(String name);
     ResponseUser findMember(String name, String email);
     void signup(String email, String name, String password, String address, String imgPath, boolean social);
     ResponseClient findByEmail(String email, boolean social);
