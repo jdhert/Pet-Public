@@ -48,4 +48,7 @@ public interface UserMapper {
 
     int getMaxPage(long id);
 
+    String duplicateCheck(long id, String name);
+
+    String checkEmail(String email);
 }

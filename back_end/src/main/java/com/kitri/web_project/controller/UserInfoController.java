@@ -33,7 +33,7 @@ public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-    private static final String frontendUrl = "http://localhost:3000";
+    private static final String frontendUrl = "http://localhost:8080";
 //    private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
     private static final String uploadRootPath = "D:/imageStore";
@@ -52,25 +52,7 @@ public class UserInfoController {
 
     @PutMapping
     public void updateUser(@RequestBody UserUpdateInfo userUpdateInfo) {
-
-        String imgPath = userMapper.getUserImages(userUpdateInfo.getUserId());
-        userMapper.updateUser(userUpdateInfo);
-        String fullPath = uploadRootPath + imgPath;
-        File file = new File(fullPath);
-        if (file.exists()) {
-            try {
-                if (file.delete()) {
-                    System.out.println("Success: Image deleted");
-                } else {
-                    System.out.println("Failed: Image could not be deleted");
-                }
-            } catch (SecurityException e) {
-                System.out.println("Failed: Security Exception occurred while deleting image");
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Failed: Image not found at path " + fullPath);
-        }
+        userInfoService.userUpdate(userUpdateInfo);
     }
 
     @PostMapping("/updatepw/{id}")
@@ -156,20 +138,12 @@ public class UserInfoController {
     public ResponseEntity<List<DiaryImgDto>> getImages(@PathVariable long id) {
         List<DiaryImgDto> imageList = userMapper.getDiaryImages(id);
         List<String> images = new ArrayList<>();
-
         for(DiaryImgDto ds : imageList){
             images.add(ds.getImgPath());
         }
-
         List<String> imageUrls = images.stream()
                 .map(path -> frontendUrl + "/images/" + path)
                 .toList();
-//                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(path)
-//                        .toUriString())
-//                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
-//                .toList();
         for (int i = 0; i < imageUrls.size(); i++) {
             imageList.get(i).setImgPath(imageUrls.get(i));
         }
@@ -254,11 +228,14 @@ public class UserInfoController {
     private String decodeImageUrl(String imagePath) {
         return frontendUrl + "/images/" + imagePath;
     }
-//    private String decodeImageUrl(String encodedUrl) {
-//        return URLDecoder.decode(ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(encodedUrl)
-//                        .toUriString(),
-//                StandardCharsets.UTF_8);
-//    }
+
+    @GetMapping("/duple_check/{id}")
+    public boolean duplicationCheck(@PathVariable long id, String name){
+        return userInfoService.duplicationCheck(id, name);
+    }
+
+    @GetMapping("/check_mail")
+    public boolean duplicationMailCheck(String email){
+        return userInfoService.checkEmail(email);
+    }
 }

@@ -28,6 +28,7 @@ import FindPassword from '../components/FindPassword.vue'
 import UpdatePw from '../components/UpdatePw.vue'
 import Footer2 from '../components/Footer2.vue'
 import NotFound from '../components/NotFound.vue';
+import UpdateEmail from '@/components/UpdateEmail.vue';
 
 
 const routes = [
@@ -120,6 +121,9 @@ const routes = [
   },
   {
     path: '/not_found', component : NotFound
+  },
+  {
+    path: '/updatemail', component : UpdateEmail
   }
 ];
 

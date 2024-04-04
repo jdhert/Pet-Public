@@ -8,7 +8,6 @@ import lombok.Setter;
 public class UserUpdateInfo {
     Long userId;
     String name;
-    String email;
     String imgPath;
     String address;
 }

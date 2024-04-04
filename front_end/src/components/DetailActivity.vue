@@ -88,7 +88,7 @@ export default {
       var rc = new kakao.maps.RoadviewClient();
       var position = new kakao.maps.LatLng(this.place.위도, this.place.경도);
 
-      rc.getNearestPanoId(position, 50, (panoId) => {
+      rc.getNearestPanoId(position, 95, (panoId) => {
         if (panoId === null) {
           console.error('No panoId found near the given position.');
           return;

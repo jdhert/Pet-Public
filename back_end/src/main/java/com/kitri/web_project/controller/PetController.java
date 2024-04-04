@@ -7,6 +7,8 @@ import com.kitri.web_project.dto.pet.UpdatePet;
 import com.kitri.web_project.dto.pet.getPetDiary;
 import com.kitri.web_project.mappers.PetMapper;
 import com.kitri.web_project.mappers.UserMapper;
+import com.kitri.web_project.service.PetService;
+import com.kitri.web_project.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,14 @@ public class PetController {
 
     @Autowired
     private PetMapper petMapper;
+
+    private final PetService petService;
+
+    @Autowired
+    public PetController(PetService petService){
+        this.petService = petService;
+    }
+
 
     private static final String frontendUrl = "http://localhost:3000";
 //    private static final String frontendUrl = System.getenv("FRONTEND_URL");
@@ -91,6 +101,8 @@ public class PetController {
 
     @DeleteMapping("/{petId}")
     public void RequestDiary(@PathVariable long petId) {
+
+        petService.deletePet(petId);
         String imgPath = String.valueOf(petMapper.getPetImages(petId));
         petMapper.deletePet(petId);
         String fullPath = uploadRootPath + imgPath;

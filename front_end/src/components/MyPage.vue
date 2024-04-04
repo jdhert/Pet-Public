@@ -28,6 +28,7 @@
                             </div>
 							<div class="d-grid gap-2">
 								<button class="btn btn-lg btn-primary" type="button" id="mybtn" onclick = "location.href = '/userupdate'">회원정보 수정</button>
+								<button class="btn btn-lg btn-primary" v-if="!this.user.social" type="button" id="mybtn" onclick = "location.href = '/updatemail'">이메일 수정</button>
                                 <button class="btn btn-lg btn-primary" v-if="!this.user.social" type="button" id="mybtn" onclick = "location.href = '/updatepw'">비밀번호 변경</button>
 								<button class="btn btn-lg btn-primary" type="button" id="mybtn" onclick = "location.href = '/deleteuser'">회원탈퇴</button>
 							</div>

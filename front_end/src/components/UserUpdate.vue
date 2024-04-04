@@ -14,12 +14,13 @@
       </div>
       <div class="input_container">
         <div class="addPetName mb-3">
-          <label class="m-2">닉네임</label>
-          <input type="text" placeholder="이름을 수정하시겠습니까?" v-model="this.user.name"/>
-        </div>
-        <div class="addPetName mb-3">
-          <label class="m-2">Email</label>
-          <input type="email" placeholder="메일을 수정시겠습니까?" v-model="this.user.email"/>
+          <div  style="display: flex; align-items: center;">
+          <label for="name" class="m-2">닉네임*</label>
+            <button class="postBtn" @click.prevent="duplicateVerify" v-if="!this.duplicateCheck" >중복체크</button>
+            <button class="postBtn" @click.prevent="this.duplicateCheck = false" v-if="this.duplicateCheck" >닉네임변경</button>
+          </div>
+            <input type="text"  v-if="!this.duplicateCheck" placeholder="이름을 수정하시겠습니까?" v-model="this.user.name"/>
+            <input type="text" id="name" v-if="this.duplicateCheck" v-model="this.user.name" readonly>
         </div>
         <div class="addAddress mb-3">
           <label class="m-2">주소</label>
@@ -54,36 +55,51 @@ export default {
       jibunAddress: '',
       detailAddress: '',
       defaultImage: require('../assets/images/plus.png'),
+      duplicateCheck: false,
     };
   },
 
   methods: {
-    // 'image' 클릭 이벤트 시 fileInput 작동
+    duplicateVerify(){
+      this.axios.get(`/api/myinfo/duple_check/${this.$cookies.get('id')}`, {
+        params: {
+          name: this.user.name
+        }
+      }).then(res => {
+        if(res.data == true){
+          this.duplicateCheck = true;
+          alert('닉네임이 중복되지 않습니다.');
+        }else{
+          alert('닉네임이 중복됩니다. 다른 닉네임을 사용하세요.');
+        }
+      }).catch();
+    },
     openFileInput() {
       const fileInput = document.getElementById('image');
       fileInput.click();
     },
-    // 썸네일 출력 
     setThumbnail(event) {
       const files = event.target.files;
       if (files && files.length > 0) {
         const reader = new FileReader();
         reader.onload = (event) => {
-          this.user.imgPath = event.target.result; // Set the thumbnail URL for preview
+          this.user.imgPath = event.target.result; 
         };
-        reader.readAsDataURL(files[0]); // Read the selected file as Data URL
-        // Assign the selected file to fileList
+        reader.readAsDataURL(files[0]); 
         this.fileList = Array.from(files);
       } else {
         console.error("No files selected or unable to read the selected file.");
       }
     },
     userUpdate() {
+      if(!this.duplicateCheck){
+        alert('닉네임 중복체크 먼저 해주세요!');
+        return;
+      }
       if (!this.roadAddress && this.detailAddress) {
         alert("주소를 입력 후 상세주소를 입력해주세요.");
         return;
       }
-      
       if (this.fileList && this.fileList.length > 0) {
         let formData = new FormData();
         formData.append('image', this.fileList[0]);
@@ -94,30 +110,19 @@ export default {
         }).then((res) => {
           for(let s of res.data)
             this.imgPath = s;
-            this.axios.put(`/api/myinfo`, {
-              userId :  this.$cookies.get("id"),
-              name : this.user.name, 
-              email : this.user.email, 
-              imgPath : this.imgPath,
-              address : `${this.roadAddress}/${this.detailAddress}`,
-            }).then(() => {
-              this.$router.push('/mypage');
-              }).catch();   
-          }).catch();      
-      } else {
-        this.axios.put(`/api/myinfo`, {
+        }).catch();
+      } else { this.imgPath = this.user.imgPath; }
+      
+      this.axios.put(`/api/myinfo`, {
           userId :  this.$cookies.get("id"),
           name : this.user.name, 
-          email : this.user.email, 
-          imgPath : this.user.imgPath,
+          imgPath : this.imgPath,
           address : `${this.roadAddress}/${this.detailAddress}`,
-        }).then(() => {
+      }).then(() => {
           this.$router.push('/mypage');
-        }).catch();
-      }
+      }).catch();
     },
 
-    // 주소 찾기
     execDaumPostcode() {
       new daum.Postcode({
         oncomplete: (data) => {
