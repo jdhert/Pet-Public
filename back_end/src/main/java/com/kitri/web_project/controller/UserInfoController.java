@@ -33,11 +33,11 @@ public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-    private static final String frontendUrl = "http://localhost:8080";
-//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+//    private static final String frontendUrl = "http://localhost:8080";
+    private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
-    private static final String uploadRootPath = "D:/imageStore";
-//    private static final String uploadRootPath = "/app/images";
+//    private static final String uploadRootPath = "D:/imageStore";
+    private static final String uploadRootPath = "/app/images";
 
     @Autowired
     public UserInfoController(UserInfoService userInfoService){
@@ -98,15 +98,9 @@ public class UserInfoController {
         String images = userMapper.getUserImages(id);
         if(images==null)
             return null;
-
         if (images.startsWith("http")) {
             return ResponseEntity.ok(images);
         } else {
-//            String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                    .path("/images/")
-//                    .path(images)
-//                    .toUriString();
-//            imageUrl = URLDecoder.decode(imageUrl, StandardCharsets.UTF_8); // URL 디코딩
             String imageUrl = frontendUrl + "/images/" + images;
             return ResponseEntity.ok(imageUrl);
         }
@@ -237,5 +231,10 @@ public class UserInfoController {
     @GetMapping("/check_mail")
     public boolean duplicationMailCheck(String email){
         return userInfoService.checkEmail(email);
+    }
+
+    @PutMapping("/updateEmail/{id}")
+    public void updateEmail(@PathVariable long id,@RequestBody String email){
+        userInfoService.updateEmail(email, id);
     }
 }

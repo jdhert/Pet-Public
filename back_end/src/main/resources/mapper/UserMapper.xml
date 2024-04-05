@@ -172,6 +172,11 @@
         SET password = #{params[2]}
         WHERE id = #{params[0]} AND password = #{params[1]}
     </update>
+    <update id="updateEmail">
+        UPDATE user
+        SET email = #{email}
+        where id = #{id}
+    </update>
 
     <select id="passwordFind" resultType="string">
         select password from user where id = #{id}

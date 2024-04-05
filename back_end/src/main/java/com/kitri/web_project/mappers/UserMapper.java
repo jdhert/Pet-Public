@@ -51,4 +51,6 @@ public interface UserMapper {
     String duplicateCheck(long id, String name);
 
     String checkEmail(String email);
+
+    void updateEmail(String email, long id);
 }
