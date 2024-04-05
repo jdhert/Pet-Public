@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="slide">
-            <div v-for="(file1, index) of fileList" :key="index"  style="width: 33%;" class="image-container">
+            <div v-for="(file1, index) of fileList" :key="file1"  style="width: 33%;" class="image-container">
               <img :src="imageUploaded[index]" alt="추가한 이미지" class="uploaded-image"/>
               <button @click.prevent="filedelete(file1)" class="delete-button custom-button">X</button>
             </div>
@@ -150,7 +150,11 @@
         }
       },
       filedelete(file1) {
-        this.fileList = this.fileList.filter(file => file !== file1);
+        const index = this.fileList.findIndex(file => file.name === file1.name);
+        if (index !== -1) {
+          this.fileList.splice(index, 1);
+          this.imageUploaded.splice(index, 1);
+        }
       },
       slidedelete(slide) {
         this.deleteList.push(slide.id);

@@ -2,6 +2,7 @@
   <header class="banner">
     <h1 class="banner-title">반려동물의 실시간 인기 사진첩</h1>
   </header>
+  <div class="backgrounding">
   <section class="ftco-section bg-light">
     <div class="freeboard">
       <div class="row1 d-flex">
@@ -25,6 +26,7 @@
       </div>
     </div>
   </section>
+  </div>
   <header>
     <img src="../assets/images/banner.png" alt="Banner" class="banner-image">  
     <h2>반려동물과의 일상을 사진과 함께 사람들과 공유하세요</h2>
@@ -374,8 +376,14 @@ export default {
     justify-content: center;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: white;
+    /* background-color: white; */
     margin-bottom: 90px;
+    font-family: "Montserrat", Arial, sans-serif;
+    /* background: #fff; */
+    font-size: 15px;
+    line-height: 1.8;
+    font-weight: 400;
+    color: gray;
   }
 
   .freeboard2 {
@@ -386,6 +394,10 @@ export default {
     width: 100%;
     margin: 0 auto;
     background-color: white;
+  }
+
+  .backgrounding {
+    background-image: url('https://images.pexels.com/photos/1353938/pexels-photo-1353938.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
   }
 
   .col-md-4 {
@@ -526,14 +538,14 @@ background-color: #4ea3ff;
     color: #121416 !important;
   }
 
-.freeboard {
+/* .freeboard {
   font-family: "Montserrat", Arial, sans-serif;
   background: #fff;
   font-size: 15px;
   line-height: 1.8;
   font-weight: 400;
   color: gray;
-}
+} */
 
 .freeboard.menu-show {
   overflow: hidden;

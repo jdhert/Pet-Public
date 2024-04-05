@@ -37,11 +37,11 @@ public class PetController {
     }
 
 
-//    private static final String frontendUrl = "http://localhost:3000";
-    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+    private static final String frontendUrl = "http://localhost:8080";
+//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
-//    private static final String uploadRootPath = "D:/imageStore";
-    private static final String uploadRootPath = "/app/images";
+    private static final String uploadRootPath = "D:/imageStore";
+//    private static final String uploadRootPath = "/app/images";
 
     @PostMapping
     public void addPet(@RequestBody RequestPet pet) {

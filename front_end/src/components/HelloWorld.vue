@@ -1,10 +1,16 @@
 <template>
     <body id="top">
-		<section id="banner"><div class="inner">
+		<section id="banner">
+      <div class="inner">
 				<h2>어서오세요. 펫퍼블릭입니다.</h2>
 				<p>반려동물과 함께하는 일상, 편리하고 신뢰할 수 있는 웹 서비스</p>
-				<ul class="actions"><li><a v-if="!isLoggedIn" href="/login" class="button big special">Sign Up</a></li>
-				</ul></div>
+				<ul class="actions">
+          <li>
+            <a v-if="!isLoggedIn" href="/login" class="button big special">Sign Up</a>
+          </li>
+				</ul>
+        <h2 v-if="isLoggedIn">반갑습니다! 펫퍼블릭에 오신 것을 환영합니다!</h2>
+      </div>
 		</section>
 		<section id="one" class="wrapper style1">
 			<header class="major">

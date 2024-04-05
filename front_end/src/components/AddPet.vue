@@ -151,35 +151,44 @@
           this.pet.recog_chip = 1;
         }
 
-        let formData = new FormData();
-        formData.append('image', this.fileList[0]);
-        console.log(this.pet.petimg);
-        console.log(this.fileList[0]);
-        console.log(formData);
-        this.axios.post(`/api/free/img`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }}).then((res) => {
-          for(let s of res.data)
-            this.imgPath = s;
-
+        if(this.fileList.length > 0){
+          let formData = new FormData();
+          formData.append('image', this.fileList[0]);
+          this.axios.post(`/api/free/img`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }}).then((res) => {
+                this.imgPath = res.data[0];
+            this.axios.post(`/api/pet`, {
+                userId :  this.$cookies.get("id"),
+                petImg : this.imgPath,
+                petName : this.pet.name, 
+                petAge : this.pet.age,
+                petWeight :  parseFloat(this.pet.weight),
+                species : this.pet.species,
+                spec_species : this.pet.spec_species,
+                petGender : this.pet.gender,
+                petDisease : !!this.pet.disease,
+                petRecog_chip : !!this.pet.recog_chip,
+                petColor : this.getRandomColor(),
+            }).then( this.$router.push('/mypage')).catch();
+          }).catch();       
+        } else {
           this.axios.post(`/api/pet`, {
-            userId :  this.$cookies.get("id"),
-            petImg : this.imgPath,
-            petName : this.pet.name, 
-            petAge : this.pet.age,
-            petWeight :  parseFloat(this.pet.weight),
-            species : this.pet.species,
-            spec_species : this.pet.spec_species,
-            petGender : this.pet.gender,
-            petDisease : !!this.pet.disease,
-            petRecog_chip : !!this.pet.recog_chip,
-            petColor : this.getRandomColor(),
-            //petcolor 랜덤값 부여
+                userId :  this.$cookies.get("id"),
+                petImg : "",
+                petName : this.pet.name, 
+                petAge : this.pet.age,
+                petWeight :  parseFloat(this.pet.weight),
+                species : this.pet.species,
+                spec_species : this.pet.spec_species,
+                petGender : this.pet.gender,
+                petDisease : !!this.pet.disease,
+                petRecog_chip : !!this.pet.recog_chip,
+                petColor : this.getRandomColor(),
+            }).then( this.$router.push('/mypage')).catch();
         }
-        ).then( this.$router.push('/mypage')).catch();
-        }).catch();       
-      },
+      }
       
     },
   };
