@@ -35,11 +35,11 @@ public class BoardController {
     BoardMapper boardMapper;
 
 
-    private static final String frontendUrl = "http://localhost:3000";
-//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+//    private static final String frontendUrl = "http://localhost:3000";
+    private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
-    private static final String uploadRootPath = "D:/imageStore";
-//    private static final String uploadRootPath = "/app/images";
+//    private static final String uploadRootPath = "D:/imageStore";
+    private static final String uploadRootPath = "/app/images";
 
 
     private final BoardService boardService;

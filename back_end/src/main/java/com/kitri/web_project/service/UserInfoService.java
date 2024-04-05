@@ -1,5 +1,7 @@
 package com.kitri.web_project.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kitri.web_project.dto.UserUpdateInfo;
 import com.kitri.web_project.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,11 @@ public class UserInfoService {
     @Autowired
     UserMapper userMapper;
 
-    private static final String frontendUrl = "http://localhost:3000";
-//  private static final String frontendUrl = System.getenv("FRONTEND_URL");
+//    private static final String frontendUrl = "http://localhost:3000";
+  private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
-    private static final String uploadRootPath = "D:/imageStore";
-    //    private static final String uploadRootPath = "/app/images";
+//    private static final String uploadRootPath = "D:/imageStore";
+        private static final String uploadRootPath = "/app/images";
 
     public boolean passwordVerify(long id, String password){
         String storedPassword = userMapper.passwordFind(id);
@@ -55,6 +57,17 @@ public class UserInfoService {
     }
 
     public boolean checkEmail(String email){
-        return  userMapper.checkEmail(email) == null;
+        return userMapper.checkEmail(email) == null;
+    }
+
+    public void updateEmail(String emailJson, long id){
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(emailJson);
+            String email = jsonNode.get("email").asText();
+            userMapper.updateEmail(email, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

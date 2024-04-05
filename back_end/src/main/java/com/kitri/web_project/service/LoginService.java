@@ -57,7 +57,7 @@ public class LoginService {
             CookieSet(response, responseClient);
             return responseClient.getId();
         } else {
-            userMapper.signup(socialLogin.getName(), socialLogin.getEmail(), socialLogin.getPassword(), "", socialLogin.getImage(), true);
+            userMapper.signup(socialLogin.getEmail(), socialLogin.getName(), socialLogin.getPassword(), "", socialLogin.getImage(), true);
             ResponseClient responseClient1 = userMapper.findByEmail(socialLogin.getEmail(), true);
             CookieSet(response, responseClient1);
             return responseClient1.getId();
