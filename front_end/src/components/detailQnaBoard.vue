@@ -135,10 +135,11 @@
     <!--대댓글 코드 종료-->
     
     <div class="comment-interactions">
-      <div class="comment-count">댓글 {{ this.commentCount }} 개 <i class="far fa-comment"></i></div>
+      <div class="comment-count" :class="{ 'margin-bottom': !this.$cookies.isKey('id') }">
+        댓글 {{ this.commentCount }} 개 <i class="far fa-comment"></i>
+      </div>
     </div>
-    <!-- <form class="addcomment" v-if="isLogin" @submit.prevent="addComment"> -->
-      <form class="addcomment" @submit.prevent="addComment">
+    <form class="addcomment" @submit.prevent="addComment" v-if="this.$cookies.isKey('id')">
       <img class="addcomment-profile-image" :src="this.usrImg" alt="Profile" />
       <input type="text" class="comment-input" placeholder="댓글을 입력하세요" v-model="commentLine">
       <button class="comment-button"><i class="far fa-paper-plane"></i></button>
@@ -767,6 +768,10 @@
   .scrollable-content {
     max-height: 333px; overflow-y: auto;
   }
+
+  .margin-bottom {
+  margin-bottom: 80px;
+}
 
   /* 모달창 */
   .text-content {
