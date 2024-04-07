@@ -5,6 +5,17 @@
               <img src="../assets/images/x.png" alt="Close"/>
             </button>
             <h1>공유하기</h1>
+            <div class="share-platform">
+                <a id="kakao-link-btn" @click="shareKakao()">
+                	<img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png" alt="카카오톡" />
+                </a>
+                <a id="facebook-link-btn" @click="shareFacebook()">
+                  <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yG/r/pENh3y_2Pnw.png" alt="페이스북">
+                </a>
+                <a id="naver-link-btn" @click="shareNaver()">
+                    <img src="../assets/images/naver_square_40x40.png" alt="네이버">
+                </a>
+            </div>
         </div>
         <div class="url-box">
             <input type="text" v-model="urlToShare" ref="urlInput" style="color: #007bff; margin-right: 1%;" readonly>
