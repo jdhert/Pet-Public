@@ -111,31 +111,33 @@ export default {
       });
     },
     toggleReplyLike(reply) {
-      let liked = !reply.liked;
-      reply.liked = liked;
-      const boardId = this.selectedCard ? this.selectedCard.id : this.selectedPost.id;
+      if(this.$cookies.isKey('id')){
+        let liked = !reply.liked;
+        reply.liked = liked;
+        const boardId = this.selectedCard ? this.selectedCard.id : this.selectedPost.id;
 
-      this.axios.post(`/api/comment/liked`, {
-        userId: this.$cookies.get('id'),
-        boardId: boardId,
-        commentId: reply.id,
-        liked: liked,   
-      })
-      .then((res)=>{
-        // console.log(res);
-        if(res.data === true) {
-          reply.likeCount++;
-          reply.liked = true;
-        } else {
-          reply.likeCount--;
-          reply.liked = false;
-        }
-        this.updateReplyLikeStatus(reply.id, liked);
-        // console.log(reply.id, liked);
-      })
-      .catch(error => {
-        console.log('대댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
-      });     
+        this.axios.post(`/api/comment/liked`, {
+          userId: this.$cookies.get('id'),
+          boardId: boardId,
+          commentId: reply.id,
+          liked: liked,   
+        })
+        .then((res)=>{
+          // console.log(res);
+          if(res.data === true) {
+            reply.likeCount++;
+            reply.liked = true;
+          } else {
+            reply.likeCount--;
+            reply.liked = false;
+          }
+          this.updateReplyLikeStatus(reply.id, liked);
+          // console.log(reply.id, liked);
+        })
+        .catch(error => {
+          console.log('대댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
+        });   
+      } else alert('로그인한 사용자만 좋아요 표시를 누를수 있습니다!');
     },
     updateReplyLikeStatus(replyId, liked) {
       // console.log(replyId, liked);

@@ -20,7 +20,7 @@
             <img class="profile-image" :src="selectedCard.userImg" alt="Profile" />
             <h1 class="username">{{ this.selectedCard.writer }}</h1>
             <button class="btn-share" style="margin-right: 0.8%;" @click="showShareModal=true"><i class="fas fa-share-alt"></i></button>
-            <FreeShareModal v-if="showShareModal" :selectedCard="selectedCard" @closeShareModal="showShareModal = false"/>
+            <FreeShareModal v-if="showShareModal" :selectedCard="selectedCard" @closeShareModal="showShareModal = false" :subject="'free'"/>
             <div v-if="isMine" class="interaction-info">
               <button type="button" class="btn-edit" @click="goToEdit">게시글 수정</button>
               <button type="button" class="btn-delete" @click="goToDelete">게시글 삭제</button>
@@ -160,7 +160,8 @@ export default {
     showModal: Boolean,
     selectedCard: Object,
     viewCount: Number,
-    showShareModal: Boolean
+    showShareModal: Boolean,
+    subject: String,
   },
   data() {
     return {
@@ -316,24 +317,27 @@ export default {
     this.axios.get(`/api/comment/${selectedId}`)
       .then((res) => {
         this.comments = res.data;
+        console.log(this.comments);
         this.comments.forEach(comment => {
           const commentId = comment.id;
+          this.fetchReplies(comment);
+          if(this.$cookies.isKey('id')){
           this.axios.get(`/api/comment/${this.$cookies.get('id')}/${commentId}/likeStatus`)
             .then((res) => {
               const commentLiked = res.data;
               comment.liked = commentLiked === true;                
-              this.fetchReplies(comment);
+              // this.fetchReplies(comment);
             });
+          }
 
-            this.axios.get(`/api/myinfo/img/${comment.userId}`)
+          this.axios.get(`/api/myinfo/img/${comment.userId}`)
             .then((res) => {
               console.log('이미지를 성공적으로 불러왔습니다.');
               comment.imgPath = res.data;
             })
             .catch(error => {
               console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error); 
-              this.fetchReplies(comment);
-             
+              // this.fetchReplies(comment);
             });
         });
       })

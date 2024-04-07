@@ -29,20 +29,25 @@ export default {
     props: {
         showShareModal: Boolean,
         selectedCard: Object,
+        subject: String
     },
     data() {
         return {
-            urlToShare: ''
+            urlToShare: '',
+            subjectUrl: ''
         };
     },
     created() {
         // 컴포넌트가 생성될 때, 부모 컴포넌트로부터 게시물 ID를 전달받아 URL을 생성
         this.generateUrl(this.$route.params.id);
+        if(this.subject === 'free')
+            this.subjectUrl = "freeboard3";
+        else this.subjectUrl = "qnaboard";
     },
     methods: {
         generateUrl(postId) {
             let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
-            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`; // 게시물의 고유한 URL 생성
+            this.urlToShare = `${baseUrl}/${this.subjectUrl}/get/${this.selectedCard.id}`; // 게시물의 고유한 URL 생성
         },
         copyUrl() {
             // input 태그의 텍스트를 복사하는 로직
@@ -55,7 +60,7 @@ export default {
                 Kakao.init('3aa989b72e924de0557fc0777a694434');
             }
             let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
-            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`;
+            this.urlToShare = `${baseUrl}/${this.subjectUrl}/get/${this.selectedCard.id}`;
             Kakao.Link.sendDefault({
                 objectType: 'feed',
                 content: {
@@ -87,13 +92,13 @@ export default {
         shareFacebook() {
             const title = `${this.selectedCard.title}`;
 	        let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
-            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`;
+            this.urlToShare = `${baseUrl}/${this.subjectUrl}/get/${this.selectedCard.id}`;
 	        window.open("http://www.facebook.com/sharer/sharer.php?u=" +this.urlToShare+ "&title=" +title);
         },
         shareNaver() {
             var title = `${this.selectedCard.title}`;
             let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
-            this.urlToShare = `${baseUrl}/freeboard3/get/${this.selectedCard.id}`;
+            this.urlToShare = `${baseUrl}/${this.subjectUrl}/get/${this.selectedCard.id}`;
             var shareURL = "https://share.naver.com/web/shareView?url=" +this.urlToShare+ "&title=" + title;
             document.location = shareURL;
         }
@@ -116,6 +121,7 @@ export default {
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.3);
+    z-index: 100;
 }
 .share-modal {
     position: relative;

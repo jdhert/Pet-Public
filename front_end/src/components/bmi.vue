@@ -53,19 +53,18 @@
       </div>
       <form @submit.prevent="handleSubmit">
       <div class="submit">
-        <select class="input-text" v-model="selectedPet">
+        <select class="input-text" v-model="selectedPet" @change="handleCatChange">
             <option value="dog">강아지</option>
             <option value="cat">고양이</option>
           </select>
           <select v-model="selectedOption1" class="input-text">
             <option :value="option.value" v-for="option in options1" :key="option.value">{{ option.label }}</option>
           </select>
-          <select v-model="selectedOption2" class="input-text" @change="handleCatChange">
+          <select v-model="selectedOption2" class="input-text">
             <option :value="option.value" v-for="option in options2" :key="option.value">{{ option.label }}</option>
           </select>
           <div class="input-container">
             <input type="text" class="petweight" v-model="inputValue" placeholder="5" @input="validateInput">
-            <!-- <div v-if="!inputValue" class="error-message">값을 입력하세요.</div> -->
           </div>
           <div v-if="!selectedPet || !selectedOption1 || !selectedOption2 || !inputValue" class="error-message">모든 값을 선택해주세요.</div>
         <input type="submit" class="submit-button" value="결과보기">
@@ -173,8 +172,7 @@ export default {
       }
     },
     handleCatChange() { 
-      // 사용 안됨
-      if (this.selectedOption1 === 'cat') {
+      if (this.selectedPet === 'cat') {
         // 두 번째 select 요소의 옵션을 고양이에 맞게 변경
         this.options2 = [
           { value: '3', label: '8개월 이하' },
