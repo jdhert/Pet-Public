@@ -1370,6 +1370,22 @@
     .fas.fa-heart {
       color: rgb(221, 221, 221)
     }
-  
-  </style> 
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .addcomment-profile-image {
+    width: 45px;
+  }
+  .addcomment {
+    width: 85%;
+  }
+}
+@media (max-width: 768px) {
+  .addcomment-profile-image {
+    width: 55px;
+  }
+  .addcomment {
+    width: 80%;
+  }
+}
+</style> 
   

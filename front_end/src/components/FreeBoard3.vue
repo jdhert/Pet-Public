@@ -856,16 +856,17 @@ form {
     width: 90vw;
   }
     .search-select {
-      width: 10vw
+      width: 13vw
     }
     .search-select1 {
-      width: 10vw;
+      width: 13vw;
     }
     .search-input {
-      width: 45vw;
+      width: 39vw;
     }
     .search-button {
       width: 20vw;
+      font-size: medium;
     }
   .custom-button {
     margin-left: 85%;
