@@ -13,11 +13,11 @@
               <div class="meta mb-2">
                 <div><a href='#'>{{ formatDate(post.createdAt) }}</a></div>
                 <div><a href="#">{{ post.writer }}</a></div>
-                <div class="meta-chat">
-                  <span class="fa fa-comment"></span> {{ post.commentCount}}
-                  <span class="fa fa-heart" style="margin-left: 5px;"></span> {{ post.likeCount }}
-                  <span class="fa-solid fa-eye" style="margin-left: 5px;"></span> {{ post.viewCount }}
-                </div>
+              </div>
+              <div class="meta-chat">
+                <span class="fa fa-comment"></span> {{ post.commentCount}}
+                <span class="fa fa-heart" style="margin-left: 5px;"></span> {{ post.likeCount }}
+                <span class="fa-solid fa-eye" style="margin-left: 5px;"></span> {{ post.viewCount }}
               </div>
               <h3 class="heading"><a href="#">{{ truncateTitle(post.title, 16) }}</a></h3>
             </div>
