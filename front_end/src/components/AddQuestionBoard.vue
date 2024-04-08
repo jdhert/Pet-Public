@@ -481,7 +481,7 @@ export default {
   padding: 0;
   border: 0;
   outline: none;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   -webkit-text-size-adjust: none;
 }
 
@@ -549,7 +549,7 @@ export default {
   height: 28px;
   vertical-align: top;
   color: #3e3e3e;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   -webkit-text-size-adjust: none;
   padding: 0;
   border: 0;

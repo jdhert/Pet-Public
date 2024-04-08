@@ -23,7 +23,9 @@
                     <div class="diary-card m-2">
                         <div class="card-list m-3">
                             <div v-for="(diary, index) in this.diary" :key="index" class="card-item" @click.prevent="goTocarousel(diary.diaryId)">
-                                <div class="card-img"><img :src="diary.imgPath" alt="Card Image"></div>
+                                <div class="card-img">
+                                    <img :src="diary.imgPath != null ? diary.imgPath : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="Card Image">
+                                </div>
                                 <div class="info-wrapper my-2">
                                     <div class="info-top">
                                         <span class="name">{{ diary.petName }}</span>
