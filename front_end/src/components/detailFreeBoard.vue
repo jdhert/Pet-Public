@@ -19,12 +19,12 @@
           <div class="profile-info" style="align-items: center;">
             <img class="profile-image" :src="selectedCard.userImg" alt="Profile" />
             <h1 class="username">{{ this.selectedCard.writer }}</h1>
-            <button class="btn-share" style="margin-right: 0.8%;" @click.prevent="showShareModal=true"><i class="fas fa-share-alt"></i></button>
+            <button class="btn-share" style="margin-right: 0.8%;" @click="showShareModal=true"><i class="fas fa-share-alt"></i></button>
             <FreeShareModal v-if="showShareModal" :selectedCard="selectedCard" @closeShareModal="showShareModal = false" :subject="'free'"/>
-            <div v-if="isMine" class="interaction-info">
-              <button type="button" class="btn-edit" @click="goToEdit">게시글 수정</button>
-              <button type="button" class="btn-delete" @click="goToDelete">게시글 삭제</button>
-            </div>
+          </div>
+          <div v-if="isMine" class="interaction-info">
+            <button type="button" class="btn-edit" @click="goToEdit">게시글 수정</button>
+            <button type="button" class="btn-delete" @click="goToDelete">게시글 삭제</button>
           </div>
           <div class="text-content" style="min-height: 90px;"> 
             <div class="intro">
@@ -1360,15 +1360,18 @@ export default {
   width: 100%;
 }
 
-/* @media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (min-width: 768px) and (max-width: 1024px) {
   .btn-close {
-    margin-right: 10px;
+    position: relative;
+    left: 50%;
   }
 }
 
 @media (max-width: 768px) { 
-
-} */
-  
+  .btn-close {
+    position: relative;
+    left: 50%;
+  }
+}
   
 </style>

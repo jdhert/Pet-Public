@@ -19,7 +19,7 @@
         </div>
         <div class="url-box">
             <input type="text" v-model="urlToShare" ref="urlInput" style="color: #007bff; margin-right: 1%;" readonly>
-            <button style="width: 7vw;" @click="copyUrl">URL 복사</button>
+            <button class="url-btn" style="width: 7vw;" @click="copyUrl">URL 복사</button>
         </div>    
     </div>
 </template>
@@ -112,5 +112,29 @@ h1 {
     justify-content: center;
     border: 0.8px solid black;
     border-radius: 2px;
+}
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .url-box {
+        width: 23vw;
+    }
+    .url-btn {
+        font-size: 0.8rem;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .url-box {
+        width: 22vw;
+    }
+    .url-btn {
+        font-size: 0.8rem;
+    }
+}
+@media (max-width: 768px) {
+    .url-box {
+        width: 23vw;
+    }
+    .url-btn {
+        font-size: 0.8rem;
+    }
 }
 </style>

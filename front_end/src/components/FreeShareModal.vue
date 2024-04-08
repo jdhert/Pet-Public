@@ -161,6 +161,7 @@ h1 {
 #kakao-link-btn img {
   width: 40px;
   height: auto; 
+  cursor: pointer;
 }
 #facebook-link-btn {
     margin-left: 20px;
@@ -168,6 +169,7 @@ h1 {
 #facebook-link-btn img {
   width: 40px;
   height: auto;
+  cursor: pointer;
 }
 #naver-link-btn {
     margin-left: 20px;
@@ -175,6 +177,7 @@ h1 {
 #naver-link-btn img {
   width: 40px;
   height: auto; 
+  cursor: pointer;
 }
 
 .url-box {
