@@ -110,7 +110,7 @@ export default {
           textColor: "#000000",
           diaryId: item.diaryId,
           borderColor: "#ffff",
-          url: `http://localhost:3000/carousel?diaryId=${item.diaryId}`
+          url: `https://pet-public.xyz/carousel?diaryId=${item.diaryId}`
         });
       });
     })
@@ -213,7 +213,7 @@ export default {
                 backgroundColor: petIdColorMap[item.petId],
                 textColor: "#000000",
                 diaryId: item.diaryId,
-                url: `http://localhost:3000/carousel?diaryId=${item.diaryId}`
+                url: `https://pet-public.xyz/carousel?diaryId=${item.diaryId}`
               });
             });
           })
@@ -270,7 +270,7 @@ export default {
           backgroundColor: petIdColorMap[item.petId],
           textColor: "#000000",
           diaryId: item.diaryId,
-          url: `http://localhost:3000/carousel?diaryId=${item.diaryId}`
+          url: `https://pet-public.xyz/carousel?diaryId=${item.diaryId}`
         });
       });
     })

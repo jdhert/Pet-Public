@@ -269,69 +269,69 @@ export default {
       await this.getList();
     },
     async getImage(List, products) {
-  for (let item of List) {
-    const res = await this.axios.get(`/getimage?query=${item.시설명}`, {
+      for (let item of List) {
+      const res = await this.axios.get(`/getimage?query=${item.시설명}`, {
+        headers: {
+          Authorization: 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
+        },
+      });
+      console.log(res.data);
+      let imageIndex = 0;
+      const existingItems = products.filter(product => product.시설명 === item.시설명);
+      if (existingItems.length > 0) {
+        imageIndex = existingItems.length;
+      }
+      const imageFound = await this.findImage(res.data, imageIndex, item);
+      if (!imageFound) {
+        item = await this.recursiveImage(2, item, products, existingItems);
+      }
+
+      if(item.img == null){
+        if(res.data.documents && res.data.documents[imageIndex] && res.data.documents[imageIndex].thumbnail_url)
+          item.img = res.data.documents[imageIndex].thumbnail_url;
+      }
+      products.push(item);
+    }
+  },
+
+  async findImage(data, imageIndex, item) {
+    for (let i = imageIndex; i < data.documents.length; i++) {
+      if (
+        data.documents[i].image_url &&
+        !data.documents[i].image_url.startsWith('https://t1.daumcdn.net/cafeattach') &&
+        !data.documents[i].image_url.startsWith('http://cfile') &&
+        !/https:\/\/.*\.pstatic\.net/.test(data.documents[i].image_url)
+      ) {
+        item.img = data.documents[i].image_url;
+        this.thumbNail.push(data.documents[i].thumbnail_url);
+        return true;
+      }
+    }
+    return false;
+  },
+  
+  async recursiveImage(page, item, products, existingItems) {
+    if(page > 5){
+      return item;
+    }
+    const res = await this.axios.get(`/getimage?page=${page}&query=${item.시설명}`, {
       headers: {
         Authorization: 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
       },
     });
+    if(!res.data.documents.length > 0)
+      return item;
     console.log(res.data);
     let imageIndex = 0;
-    const existingItems = products.filter(product => product.시설명 === item.시설명);
     if (existingItems.length > 0) {
       imageIndex = existingItems.length;
     }
     const imageFound = await this.findImage(res.data, imageIndex, item);
     if (!imageFound) {
-      item = await this.recursiveImage(2, item, products, existingItems);
+      return await this.recursiveImage(++page, item, products, existingItems);
     }
-
-    if(item.img == null){
-      if(res.data.documents[imageIndex].thumbnail_url != null)
-        item.img = res.data.documents[imageIndex].thumbnail_url;
-    }
-    products.push(item);
-  }
-},
-
-async findImage(data, imageIndex, item) {
-  for (let i = imageIndex; i < data.documents.length; i++) {
-    if (
-      data.documents[i].image_url &&
-      !data.documents[i].image_url.startsWith('https://t1.daumcdn.net/cafeattach') &&
-      !data.documents[i].image_url.startsWith('http://cfile') &&
-      !/https:\/\/.*\.pstatic\.net/.test(data.documents[i].image_url)
-    ) {
-      item.img = data.documents[i].image_url;
-      this.thumbNail.push(data.documents[i].thumbnail_url);
-      return true;
-    }
-  }
-  return false;
-},
-
-async recursiveImage(page, item, products, existingItems) {
-  if(page > 5){
     return item;
-  }
-  const res = await this.axios.get(`/getimage?page=${page}&query=${item.시설명}`, {
-    headers: {
-      Authorization: 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
-    },
-  });
-  if(!res.data.documents.length > 0)
-    return item;
-  console.log(res.data);
-  let imageIndex = 0;
-  if (existingItems.length > 0) {
-    imageIndex = existingItems.length;
-  }
-  const imageFound = await this.findImage(res.data, imageIndex, item);
-  if (!imageFound) {
-    return await this.recursiveImage(++page, item, products, existingItems);
-  }
-  return item;
-},
+  },
     getPageNumbers() {
         this.numbers = [];
         let startPage = Math.max(1, Math.floor((this.currentPage - 1) / this.paginationLimit) * this.paginationLimit + 1);
