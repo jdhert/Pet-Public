@@ -154,36 +154,39 @@ export default {
         },    
     },
     mounted() {
-        if (!this.$cookies.get("id")) {
-        alert("로그인이 필요합니다.");
-        this.$router.push('/login');
-        return;
-    }
+        if(!this.$cookies.get("id")) {
+            alert("로그인이 필요합니다.");
+            this.$router.push('/login');
+            return;
+        }
 
-    const cachedUrl = localStorage.getItem('diaryImage');
-    console.log('diaryImage')
-    if (!cachedUrl) {
-        // 캐시된 데이터가 없는 경우
-        this.fetchDiaryImages();
-    } else {
-        // 캐시된 데이터가 있는 경우
-        const localImages = JSON.parse(cachedUrl);
-        this.axios.get(`/api/myinfo/getMainImage/${this.$cookies.get("id")}`, {
-            params:{
-                page : this.currentPage
-            }
-        })
-            .then((res) => {
+        if(this.$cookies.isKey('refresh')){
+            this.$cookies.remove('refresh');
+            this.fetchDiaryImages();
+            return;
+        }
+
+        const cachedUrl = localStorage.getItem('diaryImage');
+        console.log('diaryImage')
+        if (!cachedUrl) {
+            // 캐시된 데이터가 없는 경우
+            this.fetchDiaryImages();
+        } else {
+            // 캐시된 데이터가 있는 경우
+            const localImages = JSON.parse(cachedUrl);
+            this.axios.get(`/api/myinfo/getMainImage/${this.$cookies.get("id")}`, {
+                params:{
+                    page : this.currentPage
+                }
+            }).then((res) => {
                 console.log(this.$cookies.get("id"));
                 console.log(res.data);
                 const dbImages = res.data;
                 this.maxpage = res.data[0].maxPage;
                 this.Count = res.data[0].diaryCount;
-
                 const newImages = dbImages.filter(dbImage => {
                     return !localImages.some(localImage => localImage.diaryId === dbImage.diaryId);
                 });
-
                 // 새로운 이미지가 있을 때만 fetchDiaryImages() 호출
                 if (newImages.length > 0) {
                     this.fetchDiaryImages();
@@ -197,7 +200,7 @@ export default {
             });
         }
     }
-};
+}
 </script>
 
 <style scoped>

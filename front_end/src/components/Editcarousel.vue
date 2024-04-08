@@ -227,7 +227,10 @@
       data2.img = res.data;
       console.log("성공");
       // console.log(this.imageList);
-        this.axios.put(`/api/myinfo/edit/${this.diaryId}`, data2).then(() => this.$router.push('/carousel'))
+        this.axios.put(`/api/myinfo/edit/${this.diaryId}`, data2).then(() => {
+          this.$cookies.set('refresh', true);
+          this.$router.push('/diary');
+        })
           .catch(error => {
             // 실패 시 로직
             console.error('데이터 전송 실패:', error);
@@ -236,7 +239,10 @@
         console.error("이미지 업로드 중 오류가 발생했습니다:", error);
     });
 }else{
-  this.axios.put(`/api/myinfo/edit/${this.diaryId}`, data2).then(() => this.$router.push('/carousel'))
+  this.axios.put(`/api/myinfo/edit/${this.diaryId}`, data2).then(() => { 
+    this.$cookies.set('refresh', true);
+    this.$router.push('/diary');
+  })
           .catch(error => {
             // 실패 시 로직
             console.error('데이터 전송 실패:', error);

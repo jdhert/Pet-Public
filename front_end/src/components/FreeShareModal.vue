@@ -40,13 +40,13 @@ export default {
     created() {
         // 컴포넌트가 생성될 때, 부모 컴포넌트로부터 게시물 ID를 전달받아 URL을 생성
         this.generateUrl(this.$route.params.id);
-        if(this.subject === 'free')
-            this.subjectUrl = "freeboard3";
-        else this.subjectUrl = "qnaboard";
     },
     methods: {
         generateUrl(postId) {
             let baseUrl = window.location.origin; // 현재 웹사이트의 기본 URL
+            if(this.subject === 'free')
+                this.subjectUrl = "freeboard3";
+            else this.subjectUrl = "qnaboard";
             this.urlToShare = `${baseUrl}/${this.subjectUrl}/get/${this.selectedCard.id}`; // 게시물의 고유한 URL 생성
         },
         copyUrl() {
@@ -182,10 +182,35 @@ h1 {
 
 .url-box {
     position: absolute; 
-    bottom: 42.5%; 
+    bottom: 41.5%; 
     display: flex;
     justify-content: center;
     border: 0.8px solid black;
     border-radius: 2px;
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .url-box {
+        width: 23vw;
+    }
+    .url-btn {
+        font-size: 0.8rem;
+    }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .url-box {
+        width: 22vw;
+    }
+    .url-btn {
+        font-size: 0.8rem;
+    }
+}
+@media (max-width: 768px) {
+    .url-box {
+        width: 23vw;
+    }
+    .url-btn {
+        font-size: 0.8rem;
+    }
 }
 </style>
