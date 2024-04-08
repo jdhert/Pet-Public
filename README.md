@@ -24,10 +24,11 @@ PETPUBLIC은 반려동물과 함께하는 일상을 기록하고, 동반 가능�
 ![localhost_3000_freeboard3](https://github.com/jdhert/pet-public12/assets/106420689/9c7fb8fd-5b6f-4ea7-984a-e4b60458908d)
 
 # 💙 Q & A 💙
-![qna_readme](https://github.com/jdhert/pet-public12/assets/106420689/26e9d510-1a8f-406b-8630-b34c67fca423)
+![pet_qna](https://github.com/jdhert/Pet-Public/assets/106420689/132e86dd-341e-4de1-bf3c-b7eb644cdbe4)
 
 # 💙 액티비티 💙
-![localhost_3000_pet_act (1)](https://github.com/jdhert/pet-public12/assets/106420689/60717911-d4ff-4dbb-a7a2-d884a6c2aad2)
+![activity_map_3](https://github.com/jdhert/Pet-Public/assets/106420689/70f2ccb0-b041-4d47-b8f9-09e6ffbf5ebe)
+![activity_modal](https://github.com/jdhert/Pet-Public/assets/106420689/61fffa81-7186-405c-9fd6-9c7bd47acd51)
 
 # 💙 다이어리 💙
 ![localhost_3000_diary (3)](https://github.com/jdhert/Pet-Public/assets/106420689/69698ebf-c740-4487-a8fc-3fc8cae393ce)
