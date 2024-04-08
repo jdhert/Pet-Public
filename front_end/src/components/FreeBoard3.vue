@@ -396,9 +396,9 @@ export default {
     background-color: white;
   }
 
-  .backgrounding {
+  /* .backgrounding {
     background-image: url('https://images.pexels.com/photos/1353938/pexels-photo-1353938.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-  }
+  } */
 
   .col-md-4 {
     margin-top: 20px;

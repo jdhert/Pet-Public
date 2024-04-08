@@ -253,6 +253,7 @@
                         }
                     }).then((res) => {
                         this.posts = res.data;
+                        console.log(this.posts);
                         if(this.posts.length > 0)
                             this.totalRowCount = this.posts[0].totalRowCount;
                     });
