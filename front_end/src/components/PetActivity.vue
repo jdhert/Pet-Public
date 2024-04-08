@@ -22,7 +22,9 @@
       <div class="carousel-items" ref="recommendCarousel">
         <div v-for="product of this.products2" :key="product" class="product" @click.prevent="openModal(product)">
           <div class="product-image">
-            <img :src="product.img" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="준비중">
+            <img :src="product.img != null ? product.img : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; 
+            this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" 
+            alt="준비중">
           </div>
           <div class="product-info">
             <h3>{{ product.시설명 }}</h3>
@@ -83,7 +85,9 @@
       <div class="carousel-items" ref="itemsCarousel">
         <div v-for="product in this.products" :key="product" class="product" @click.prevent="openModal(product)">
           <div class="product-image">
-            <img :src="product.img" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="준비중">
+            <img :src="product.img != null ? product.img : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; 
+            this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" 
+            alt="준비중">
           </div>
           <div class="product-info">
             <h3>{{ product.시설명 }}</h3>
@@ -250,35 +254,7 @@ export default {
       for(let a of res.data) 
           this.markerList.push([a.위도, a.경도]);
       this.nearBy = res.data;
-      for(let item of this.nearBy){
-        const res = await this.axios.get(`/getimage?query=${item.시설명}}`,{
-          headers: {
-            Authorization : 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
-          }
-        });
-        console.log(res.data);
-        let imageIndex = 0;
-        const existingItems = this.products2.filter(product => product.시설명 === item.시설명);
-
-        if (existingItems.length > 0) {
-          imageIndex = existingItems.length;
-        }
-      
-        let imageFound = false;
-        for (let i = imageIndex; i < res.data.documents.length; i++) {
-          if (res.data.documents[i].image_url ) {
-            item.img = res.data.documents[i].image_url;
-            this.thumbNail.push(res.data.documents[i].thumbnail_url);
-            imageFound = true;
-            break;
-          }
-        }
-      
-        if (!imageFound) {
-          item.img = this.imgSet;
-        }
-        this.products2.push(item);
-      }
+      this.getImage(this.nearBy, this.products2);
     },
     searching(){
       this.currentPage = 1;
@@ -292,41 +268,70 @@ export default {
       this.currentPage = 1;
       await this.getList();
     },
-    async getImage(List){
-      let i = 0;
-      for(let item of List){
-        const res = await this.axios.get(`/getimage?query=${item.시설명}}`,{
-          headers: {
-            Authorization : 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
-          }
-        });
-        console.log(res.data);
-        
-        let imageIndex = 0;
-        const existingItems = this.products.filter(product => product.시설명 === item.시설명);
-            
-        if (existingItems.length > 0) {
-          imageIndex = existingItems.length;
-        }
-      
-        let imageFound = false;
-        for (let i = imageIndex; i < res.data.documents.length; i++) {
-          if (res.data.documents[i].image_url) {
-            item.img = res.data.documents[i].image_url;
-            this.thumbNail.push(res.data.documents[i].thumbnail_url);
-            imageFound = true;
-            break;
-          }
-        }
-      
-        if (!imageFound) {
-          item.img = this.imgSet;
-        }
-      
-        this.products.push(item);
-    
-      }
+    async getImage(List, products) {
+  for (let item of List) {
+    const res = await this.axios.get(`/getimage?query=${item.시설명}`, {
+      headers: {
+        Authorization: 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
+      },
+    });
+    console.log(res.data);
+    let imageIndex = 0;
+    const existingItems = products.filter(product => product.시설명 === item.시설명);
+    if (existingItems.length > 0) {
+      imageIndex = existingItems.length;
+    }
+    const imageFound = await this.findImage(res.data, imageIndex, item);
+    if (!imageFound) {
+      item = await this.recursiveImage(2, item, products, existingItems);
+    }
+
+    if(item.img == null){
+      if(res.data.documents[imageIndex].thumbnail_url != null)
+        item.img = res.data.documents[imageIndex].thumbnail_url;
+    }
+    products.push(item);
+  }
+},
+
+async findImage(data, imageIndex, item) {
+  for (let i = imageIndex; i < data.documents.length; i++) {
+    if (
+      data.documents[i].image_url &&
+      !data.documents[i].image_url.startsWith('https://t1.daumcdn.net/cafeattach') &&
+      !data.documents[i].image_url.startsWith('http://cfile') &&
+      !/https:\/\/.*\.pstatic\.net/.test(data.documents[i].image_url)
+    ) {
+      item.img = data.documents[i].image_url;
+      this.thumbNail.push(data.documents[i].thumbnail_url);
+      return true;
+    }
+  }
+  return false;
+},
+
+async recursiveImage(page, item, products, existingItems) {
+  if(page > 5){
+    return item;
+  }
+  const res = await this.axios.get(`/getimage?page=${page}&query=${item.시설명}`, {
+    headers: {
+      Authorization: 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
     },
+  });
+  if(!res.data.documents.length > 0)
+    return item;
+  console.log(res.data);
+  let imageIndex = 0;
+  if (existingItems.length > 0) {
+    imageIndex = existingItems.length;
+  }
+  const imageFound = await this.findImage(res.data, imageIndex, item);
+  if (!imageFound) {
+    return await this.recursiveImage(++page, item, products, existingItems);
+  }
+  return item;
+},
     getPageNumbers() {
         this.numbers = [];
         let startPage = Math.max(1, Math.floor((this.currentPage - 1) / this.paginationLimit) * this.paginationLimit + 1);
@@ -356,7 +361,7 @@ export default {
         this.activity = res.data;
         this.maxPage = this.activity[0].maxPage;
         this.getPageNumbers();
-        await this.getImage(this.activity);
+        this.getImage(this.activity, this.products);
         this.showLoadingIndicator(false); 
       } catch (error) {
         console.error(error);

@@ -19,7 +19,7 @@
             </div>
     
             <div class="detail">
-              <img :src="this.place.img" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="">
+              <img :src="this.place.img != null ? this.place.img : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="">
                 <div class="info">
                 <h5> 기본 장소 설명 : {{ this.place.basicInfoPlaceDescription }}</h5>
                 <h5>주소 : {{ this.place.도로명주소 }}</h5>
@@ -88,7 +88,7 @@ export default {
       var rc = new kakao.maps.RoadviewClient();
       var position = new kakao.maps.LatLng(this.place.위도, this.place.경도);
 
-      rc.getNearestPanoId(position, 95, (panoId) => {
+      rc.getNearestPanoId(position, 100, (panoId) => {
         if (panoId === null) {
           console.error('No panoId found near the given position.');
           return;
@@ -296,9 +296,8 @@ export default {
   .detail .info{
     margin-top: 5px;
     align-items: center;
-    width:255px;
-    float: left;
-    margin-left: 160px;
+    width: 450px;
+    margin-left: 120px;
     text-align: left;
   }
   
