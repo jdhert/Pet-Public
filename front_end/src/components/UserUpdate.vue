@@ -100,6 +100,7 @@ export default {
         alert("주소를 입력 후 상세주소를 입력해주세요.");
         return;
       }
+      let img1 = "";
       if (this.fileList && this.fileList.length > 0) {
         let formData = new FormData();
         formData.append('image', this.fileList[0]);
@@ -108,19 +109,28 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         }).then((res) => {
-          for(let s of res.data)
-            this.imgPath = s;
+            img1 = res.data[0];
+            this.axios.put(`/api/myinfo`, {
+                userId :  this.$cookies.get("id"),
+                name : this.user.name, 
+                imgPath : img1,
+                address : `${this.roadAddress}/${this.detailAddress}`,
+            }).then(() => {
+                this.$router.push('/mypage');
+            }).catch();
         }).catch();
-      } else { this.imgPath = this.user.imgPath; }
-      
-      this.axios.put(`/api/myinfo`, {
+      } else { 
+        img1 = this.user.imgPath;
+        this.axios.put(`/api/myinfo`, {
           userId :  this.$cookies.get("id"),
           name : this.user.name, 
-          imgPath : this.imgPath,
+          imgPath : img1,
           address : `${this.roadAddress}/${this.detailAddress}`,
-      }).then(() => {
-          this.$router.push('/mypage');
-      }).catch();
+        }).then(() => {
+            this.$router.push('/mypage');
+        }).catch(); 
+      }
+
     },
 
     execDaumPostcode() {

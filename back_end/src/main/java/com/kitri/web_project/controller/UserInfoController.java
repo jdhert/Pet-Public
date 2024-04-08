@@ -33,11 +33,11 @@ public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-//    private static final String frontendUrl = "http://localhost:8080";
-    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+    private static final String frontendUrl = "http://localhost:8080";
+//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
-//    private static final String uploadRootPath = "D:/imageStore";
-    private static final String uploadRootPath = "/app/images";
+    private static final String uploadRootPath = "D:/imageStore";
+//    private static final String uploadRootPath = "/app/images";
 
     @Autowired
     public UserInfoController(UserInfoService userInfoService){

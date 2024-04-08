@@ -3,12 +3,12 @@
   <body id="body1">
   <section id="banner">
       <div class="inner">
-  			<h2>내 반려동물과 같이 갈 수 있는 곳</h2>
+  			<h2>반려동물과 함께 즐길 수 있는 최고의 장소를 찾고 계신가요?</h2>
   			<p>어디든 소중한 나의 반려동물과 함께!</p>
   		</div>
   </section>
 
-  <h1>{{ this.user }}님의 현재 위치  <img style="width: 120px; height: 90px;" src="../assets/images/activity_image2.png" alt="image"></h1>
+  <h1>{{ this.user }}님의 현재 위치  <img class="mapImage" src="../assets/images/activity_image2.png" alt="image"></h1>
   <div id="map"></div>
   <br>
   <div class="act_info">
@@ -38,9 +38,8 @@
 
   <div id="app">
     <header class="site-header">
-      <!-- <h1>{{ this.user}}님을 위한 반려동물 동반 장소 검색 상자</h1> -->
       <h1>반려동물과 동반 가능한 장소를 검색해 보세요!
-        <img style="width: 50px; height: 50px;" src="../assets/images/activity_image3.png" alt="image"></h1>
+        <img class="searchImage" src="../assets/images/activity_image3.png" alt="image"></h1>
       <br>
       <div>
         <div class="search-bar" style="display: flex; align-items: center;">       
@@ -257,7 +256,7 @@ export default {
             Authorization : 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
           }
         });
-
+        console.log(res.data);
         let imageIndex = 0;
         const existingItems = this.products2.filter(product => product.시설명 === item.시설명);
 
@@ -267,7 +266,7 @@ export default {
       
         let imageFound = false;
         for (let i = imageIndex; i < res.data.documents.length; i++) {
-          if (res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile")) {
+          if (res.data.documents[i].image_url ) {
             item.img = res.data.documents[i].image_url;
             this.thumbNail.push(res.data.documents[i].thumbnail_url);
             imageFound = true;
@@ -301,7 +300,8 @@ export default {
             Authorization : 'KakaoAK 1873813cac8513a7b412ff42dd4083de',
           }
         });
-
+        console.log(res.data);
+        
         let imageIndex = 0;
         const existingItems = this.products.filter(product => product.시설명 === item.시설명);
             
@@ -311,7 +311,7 @@ export default {
       
         let imageFound = false;
         for (let i = imageIndex; i < res.data.documents.length; i++) {
-          if (res.data.documents[i].image_url && !res.data.documents[i].image_url.startsWith("http://cfile")) {
+          if (res.data.documents[i].image_url) {
             item.img = res.data.documents[i].image_url;
             this.thumbNail.push(res.data.documents[i].thumbnail_url);
             imageFound = true;
@@ -538,6 +538,19 @@ export default {
   font-family: 'Ownglyph_meetme-Rg';
 }
 
+.mapImage {
+  width: 90px;
+  height: 75px;
+}
+.placeImage {
+  width: 80px;
+  height: 70px;
+}
+.searchImage {
+  width: 45px;
+  height: 45px;
+}
+
 .site-header {
   background-color: #f8f9fa; /* 배경색 */
   padding: 20px 40px; /* 상하 좌우 패딩 */
@@ -553,7 +566,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 43%; /* 초기 너비를 90%로 설정 */
+  width: 70%;
   margin: 0 auto;
   border: 3px solid #4ea3ff;
   border-radius: 50px;
@@ -563,7 +576,7 @@ export default {
 .search-input {
   text-align: center;  
   flex: 1; /* 나머지 공간을 모두 차지 */
-  width: calc(40vw - 105px); /* 검색어 입력란 너비를 동적으로 조정합니다 */
+  width: calc(65vw - 105px); /* 검색어 입력란 너비를 동적으로 조정합니다 */
   background: none;
   font-size: 20px;
   border-radius: 60px;
@@ -729,7 +742,7 @@ form{
 }
 .product-image > img {
   width: 100%; /* 이미지의 너비를 부모 요소에 맞게 100%로 설정 */
-  height: auto; /* 높이를 자동으로 조정하여 이미지 비율을 유지 */
+  height: 170px; /* 높이를 자동으로 조정하여 이미지 비율을 유지 */
   max-height: 20vh; /* 최대 높이를 viewport 높이의 10%로 제한 */
   background-color: #ddd; /* Placeholder color */
   margin-bottom: 10px;
@@ -833,19 +846,36 @@ li{
   cursor: pointer;
 }
 
-@media screen and (min-width: 1440px) and (max-width: 2560px) {
-}
 
 @media screen and (min-width: 1024px) and (max-width: 1440px) {
+  .search-bar {
+    width:70%; /* 화면 너비가 768px 이상일 때 너비를 60%로 조정 */
+  }
   .search-input {
-    width: calc(39vw - 105px);
+    width: calc(60vw - 105px);
   }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-  .search-input {
-    width: calc(37vw - 105px);
+  .search-bar {
+    width:70%; /* 화면 너비가 768px 이상일 때 너비를 60%로 조정 */
   }
+  .search-input {
+    width: calc(60vw - 105px);
+  }
+  .placeImage {
+    width: 52px;
+    height: 50px;
+  }
+  .mapImage {
+    width: 70px;
+    height: 55px;
+  }
+  .searchImage {
+    width: 40px;
+    height: 40px;
+  }
+ 
 }
 
 @media (max-width: 768px) {
@@ -853,15 +883,34 @@ li{
     font-size: calc(1.3rem - .4vw);
   }
   .search-bar {
-    width: 50%; /* 화면 너비가 768px 이상일 때 너비를 60%로 조정 */
+    width:70%; /* 화면 너비가 768px 이상일 때 너비를 60%로 조정 */
   }
   .search-input {
-    width: calc(43vw - 105px);
+    width: calc(58vw - 105px);
+  }
+  .card-columns {
+    column-count: 3;
+    column-width: 80%;
+  }
+  .placeImage, .mapImage, .searchImage {
+      display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .search-bar {
+    width: 70%; /* 화면 너비가 768px 이상일 때 너비를 60%로 조정 */
+  }
+  .search-input {
+    width: calc(55vw - 105px);
   }
   .card-columns {
         column-count: 3;
         column-width: 80%;
-    }
+      }
+  .placeImage, .mapImage, .searchImage {
+      display: none;
+  }
 }
 
 :deep(.customoverlay) {position:relative;bottom:85px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
@@ -869,9 +918,6 @@ li{
 :deep(.customoverlay a) {display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
 :deep(.customoverlay .title) {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
 :deep(.customoverlay:after) {content:'';position:absolute;margin-left:-12px;left:50%;bottom:-12px;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-
-/* :deep .customoverlay.close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
-:deep .customoverlay.close:hover {cursor: pointer;} */
 
 
 :deep(.wrap) {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
@@ -886,7 +932,6 @@ li{
 :deep(.desc .ellipsis) {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 :deep(.desc .jibun) {font-size: 11px;color: #888;margin-top: -2px;}
 :deep(.info .img) {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-/* :deep(.info:after) {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')} */
 :deep(.info .link) {color: #5085BB;}
 
 </style>

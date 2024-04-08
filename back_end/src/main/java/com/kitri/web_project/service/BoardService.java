@@ -20,8 +20,8 @@ public class BoardService {
     @Autowired
     BoardMapper boardMapper;
 
-//    private static final String frontendUrl = "http://localhost:3000";
-    private static final String frontendUrl = System.getenv("FRONTEND_URL");
+    private static final String frontendUrl = "http://localhost:8080";
+//    private static final String frontendUrl = System.getenv("FRONTEND_URL");
 
     public List<BoardInfo> boardInfos(long id, int page){
         return boardMapper.getMyLike(id, (page-1) * 10);

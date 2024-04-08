@@ -15,7 +15,7 @@
                 <a v-for="tag of tags" href="#" @click="emitTagSearch(tag)" >{{ '#' + tag }}</a>
               </div>
               <button class="btn-share" style="margin-right: 0.8%;" @click="showShareModal=true"><i class="fas fa-share-alt"></i></button>
-              <QnaShareModal v-if="showShareModal" :selectedPost="selectedPost" @closeShareModal="showShareModal = false"/>
+              <FreeShareModal v-if="showShareModal" :selectedCard="selectedPost" @closeShareModal="showShareModal = false" :subject="'qna'"/>
               <div v-if="isMine" class="interaction-info">
                 <button type="button" class="btn-edit" @click="goToEditPost">게시글 수정</button>
                 <button type="button" class="btn-delete" @click="goToDeletePost">게시글 삭제</button>
@@ -135,10 +135,11 @@
     <!--대댓글 코드 종료-->
     
     <div class="comment-interactions">
-      <div class="comment-count">댓글 {{ this.commentCount }} 개 <i class="far fa-comment"></i></div>
+      <div class="comment-count" :class="{ 'margin-bottom': !this.$cookies.isKey('id') }">
+        댓글 {{ this.commentCount }} 개 <i class="far fa-comment"></i>
+      </div>
     </div>
-    <!-- <form class="addcomment" v-if="isLogin" @submit.prevent="addComment"> -->
-      <form class="addcomment" @submit.prevent="addComment">
+    <form class="addcomment" @submit.prevent="addComment" v-if="this.$cookies.isKey('id')">
       <img class="addcomment-profile-image" :src="this.usrImg" alt="Profile" />
       <input type="text" class="comment-input" placeholder="댓글을 입력하세요" v-model="commentLine">
       <button class="comment-button"><i class="far fa-paper-plane"></i></button>
@@ -152,7 +153,7 @@
   <script>
   import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
   import ReplyComponent from '../components/ReplyComponent.vue';
-  import QnaShareModal from '../components/QnaShareModal.vue';
+  import FreeShareModal from '../components/FreeShareModal.vue';
   
   
   export default {
@@ -162,7 +163,7 @@
       Pagination,
       Navigation,
       ReplyComponent,
-      QnaShareModal, 
+      FreeShareModal, 
     },
     props: {
       reply2: Object,
@@ -172,6 +173,7 @@
       showShareModal: Boolean,
       showQnaModal: Boolean,
       selectedPost: Object,
+      subject: String,
       // images: Array,
     },
     data() {
@@ -571,28 +573,30 @@
     },
     //대댓글 좋아요 토글
     toggleReplyLike(reply) {
-      let liked = !reply.liked;
-      reply.liked = liked;
-  
-      this.axios.post(`/api/comment/liked`, {
-        userId: this.$cookies.get('id'),
-        boardId: this.selectedPost.id,
-        commentId: reply.id,
-        liked: liked,   
-      })
-      .then((res)=>{
-        if(res.data === true) {
-          reply.likeCount++;
-          reply.liked = true;
-        } else {
-          reply.likeCount--;
-          reply.liked = false;
-        }
-        this.updateReplyLikeStatus(reply.id, liked);
-      })
-      .catch(error => {
-        console.log('대댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
-      });     
+      if(this.$cookies.get('id')){
+        let liked = !reply.liked;
+        reply.liked = liked;
+        
+        this.axios.post(`/api/comment/liked`, {
+          userId: this.$cookies.get('id'),
+          boardId: this.selectedPost.id,
+          commentId: reply.id,
+          liked: liked,   
+        })
+        .then((res)=>{
+          if(res.data === true) {
+            reply.likeCount++;
+            reply.liked = true;
+          } else {
+            reply.likeCount--;
+            reply.liked = false;
+          }
+          this.updateReplyLikeStatus(reply.id, liked);
+        })
+        .catch(error => {
+          console.log('대댓글 좋아요 상태를 업데이트하는 중 오류가 발생했습니다.', error);
+        });    
+      } else alert('로그인한 사용자만 좋아요 표시가 가능합니다.');
     },
     //대댓글 좋아요 수, 좋아요 저장
     updateReplyLikeStatus(replyId, liked) {
@@ -764,6 +768,10 @@
   .scrollable-content {
     max-height: 333px; overflow-y: auto;
   }
+
+  .margin-bottom {
+  margin-bottom: 80px;
+}
 
   /* 모달창 */
   .text-content {

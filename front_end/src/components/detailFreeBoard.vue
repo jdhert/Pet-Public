@@ -20,7 +20,7 @@
             <img class="profile-image" :src="selectedCard.userImg" alt="Profile" />
             <h1 class="username">{{ this.selectedCard.writer }}</h1>
             <button class="btn-share" style="margin-right: 0.8%;" @click="showShareModal=true"><i class="fas fa-share-alt"></i></button>
-            <FreeShareModal v-if="showShareModal" :selectedCard="selectedCard" @closeShareModal="showShareModal = false"/>
+            <FreeShareModal v-if="showShareModal" :selectedCard="selectedCard" @closeShareModal="showShareModal = false" :subject="'free'"/>
           </div>
           <div v-if="isMine" class="interaction-info">
             <button type="button" class="btn-edit" @click="goToEdit">게시글 수정</button>
@@ -128,7 +128,7 @@
           <div class="comment-count">댓글 {{ this.commentCount }} 개 <i class="far fa-comment"></i></div>
           <div class="view-count">조회수 {{ viewCount }} 개</div>
         </div>
-        <form class="addcomment" @submit.prevent="addComment">
+        <form class="addcomment" @submit.prevent="addComment" v-if="this.$cookies.isKey('id')">
           <img class="addcomment-profile-image" :src="this.usrImg" alt="Profile" />
           <input type="text" class="comment-input" placeholder="댓글을 입력하세요" v-model="commentLine">
           <button class="comment-button"><i class="far fa-paper-plane"></i></button>
@@ -160,7 +160,8 @@ export default {
     showModal: Boolean,
     selectedCard: Object,
     viewCount: Number,
-    showShareModal: Boolean
+    showShareModal: Boolean,
+    subject: String,
   },
   data() {
     return {
@@ -316,24 +317,27 @@ export default {
     this.axios.get(`/api/comment/${selectedId}`)
       .then((res) => {
         this.comments = res.data;
+        console.log(this.comments);
         this.comments.forEach(comment => {
           const commentId = comment.id;
+          this.fetchReplies(comment);
+          if(this.$cookies.isKey('id')){
           this.axios.get(`/api/comment/${this.$cookies.get('id')}/${commentId}/likeStatus`)
             .then((res) => {
               const commentLiked = res.data;
               comment.liked = commentLiked === true;                
-              this.fetchReplies(comment);
+              // this.fetchReplies(comment);
             });
+          }
 
-            this.axios.get(`/api/myinfo/img/${comment.userId}`)
+          this.axios.get(`/api/myinfo/img/${comment.userId}`)
             .then((res) => {
               console.log('이미지를 성공적으로 불러왔습니다.');
               comment.imgPath = res.data;
             })
             .catch(error => {
               console.log('댓글 좋아요 상태를 불러오는 중 오류 발생:', error); 
-              this.fetchReplies(comment);
-             
+              // this.fetchReplies(comment);
             });
         });
       })
