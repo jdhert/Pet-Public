@@ -222,7 +222,6 @@
               this.$router.push('/freeboard3').then(() => {
                 window.location.reload();
               });
-
             }).catch(error => {
               console.error('Error updating post:', error);
             });
@@ -589,7 +588,7 @@ button:hover {
   padding: 0;
   border: 0;
   outline: none;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   -webkit-text-size-adjust: none;
 }
 
@@ -656,7 +655,7 @@ input {
   height: 28px;
   vertical-align: top;
   color: #3e3e3e;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   -webkit-text-size-adjust: none;
   padding: 0;
   border: 0;
