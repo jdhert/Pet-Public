@@ -7,6 +7,8 @@ PETPUBLIC은 반려동물과 함께하는 일상을 기록하고, 동반 가능�
 
 ![petpublic_site](https://github.com/jdhert/pet-public/assets/106420689/468f28df-ce23-47cc-a2e6-f5b3177c9f67)
 
+(자세한 설명 [Team projects PPT](https://www.canva.com/design/DAGAtHJ__6E/w_r6gat_Xpq1i0Re05Ka5A/edit?utm_content=DAGAtHJ__6E&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) / [Team projects WIKI](https://github.com/jdhert/Pet-Public/wiki) )
+
 # 사이트 소개 🌟
 펫퍼블릭 사이트는 소중한 반려동물과 함께하는 삶을 더욱 특별하게 만들기 위해 플랫폼을 기획하였습니다.
 펫퍼블릭에서는 이용자들이 반려동물의 건강과 관련된 궁금한 사항들을 자유롭게 물어보고, 서로의 경험과 지식을 나눌 수 있는 공간을 제공합니다.
