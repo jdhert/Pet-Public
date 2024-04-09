@@ -162,6 +162,12 @@
       },
 
       update() {
+
+        if(this.tags.length > 8){
+          alert('태그가 너무 많습니다!');
+          return;
+        }
+
         const tags = [];
 
         for (let tag1 of this.tags) {

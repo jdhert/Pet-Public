@@ -155,6 +155,12 @@
         this.slides = this.slides.filter(s => s !== slide);
       },
       update() {
+
+        if(this.tags.length > 8){
+          alert('태그가 너무 많습니다!');
+          return;
+        }
+
         const tags = [];
 
         for (let tag1 of this.tags) {
@@ -577,7 +583,7 @@
   padding: 0;
   border: 0;
   outline: none;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   -webkit-text-size-adjust: none;
 }
 
@@ -648,7 +654,7 @@
   height: 28px;
   vertical-align: top;
   color: #3e3e3e;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
   -webkit-text-size-adjust: none;
   padding: 0;
   border: 0;

@@ -10,7 +10,6 @@ public class SignUpService {
     UserMapper userMapper;
 
     public boolean nameCheck(String name){
-        boolean a = userMapper.nameCheck(name) == null;
         return userMapper.nameCheck(name) == null;
     }
 }

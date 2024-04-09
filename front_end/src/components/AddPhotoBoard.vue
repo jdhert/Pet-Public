@@ -138,12 +138,24 @@ export default {
       // 파일 업로드 로직
     },
     upload() {
-      let formData = new FormData();
-      this.fileList.forEach((file) => {
-        formData.append('image', file);
-      });
+      if(this.tags.length > 8){
+        alert('태그가 너무 많습니다!');
+        return;
+      }
+
+      if(this.selectedCategory == ''){
+        alert('카테고리를 선정해주세요!');
+        return;
+      }
+    
 
       if (this.fileList.length > 0) {
+
+        let formData = new FormData();
+        this.fileList.forEach((file) => {
+          formData.append('image', file);
+        });
+
         this.axios
           .post(`/api/free/img`, formData, {
             headers: {

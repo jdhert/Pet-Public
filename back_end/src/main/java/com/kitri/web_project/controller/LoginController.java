@@ -32,10 +32,6 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<Long> Log(@RequestBody LoginUser loginUser, HttpServletResponse response) {
         ResponseClient responseUsers = userMapper.findByEmail(loginUser.getEmail(), false);
-//        if(responseUsers == null)
-//            return 0L;
-//        if(!Objects.equals(loginUser.getPassword(), responseUsers.getPassword()))
-//            return 0L;
         if (responseUsers == null || !Objects.equals(loginUser.getPassword(), responseUsers.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(0L);
         }
