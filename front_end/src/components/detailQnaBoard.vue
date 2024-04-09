@@ -763,10 +763,15 @@
       font-family: 'omyu_pretty';
   }
   .preview {
-    display: flex
+    display: flex;
+    position: relative;
+    max-height: 20rem;
   }
   .scrollable-content {
-    max-height: 333px; overflow-y: auto;
+    max-height: 17rem;
+    max-width: 100%; 
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
 
   .margin-bottom {
@@ -775,9 +780,8 @@
 
   /* 모달창 */
   .text-content {
-    min-height: 333px;
     width: 50%;
-    padding: 50px;
+    margin: 50px;
   }
   .modal {
       position: fixed;
@@ -804,7 +808,7 @@
       pointer-events: auto; 
       width: 80%;
       max-width: 1000px; 
-      height: 90%;
+      height: 90vh;
       max-height: 1000px;
   }
   .modal-content {
@@ -819,6 +823,8 @@
       outline: 0;
       width: 100%;
       height: 100%; 
+      overflow-y: auto;
+      scrollbar-width: thin;
   }
   .interaction-info {
      display: flex;
@@ -982,6 +988,7 @@
     }
     .like {
       margin-right: 10px;
+      cursor: pointer;
     }
 
     /* 
@@ -1125,8 +1132,8 @@
   
     .cm-interactions {
       padding-bottom: 10px;
-      position: absolute;
-      top: 65%;
+      position: relative;
+      top:3%;
       left: 5%;
       font-family: 'omyu_pretty';
       border-top: 2px solid #ddd;
@@ -1163,6 +1170,7 @@
       padding-top: 10px;
       display: flex;
       margin-left: 35px;
+      position: relative;
     }
     
     .view-count {
@@ -1251,6 +1259,8 @@
       width: 90%;
       margin-left: auto;
       margin-right: 50px;
+      position: relative;
+      bottom: 0rem;
     }
     
     .addcomment-profile-image {
@@ -1393,6 +1403,17 @@
   }
   .addcomment {
     width: 80%;
+  }
+}
+@media (max-height: 1000px) {
+  .modal-dialog {
+    height: 85vh; /* 화면이 더 작을 때 높이를 늘립니다 */
+  }
+}
+/* 브라우저 창의 높이가 500px 이하일 때 적용될 스타일 */
+@media (max-height: 600px) {
+  .modal-dialog {
+    height: 80vh; /* 화면이 더 작을 때 높이를 더욱 늘립니다 */
   }
 }
 </style> 

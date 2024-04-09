@@ -10,12 +10,12 @@
         </template>
       </carousel>
       <div class="content">
+        <div class="btn-close-box">
+          <button type="button" class="btn-close fixed-button" @click="closeModal(this.selectedCard.id)" aria-label="Close">
+            <img src="../assets/images/x.png" alt="Close" />
+          </button>
+        </div>
         <div class="header">
-          <div>
-            <button type="button" class="btn-close fixed-button" @click="closeModal(this.selectedCard.id)" aria-label="Close">
-              <img src="../assets/images/x.png" alt="Close" />
-            </button>
-          </div>
           <div class="profile-info" style="align-items: center;">
             <img class="profile-image" :src="selectedCard.userImg" alt="Profile" />
             <h1 class="username">{{ this.selectedCard.writer }}</h1>
@@ -28,7 +28,7 @@
           </div>
           <div class="text-content" style="min-height: 90px;"> 
             <div class="intro">
-              <div class="scrollable-content" style="max-height: 130px; overflow-y: auto;">
+              <div class="scrollable-content" style="max-height: 130px; overflow-y: auto; scrollbar-width: thin;">
                 <p>{{ selectedCard.content }}</p>
               </div>
             </div>
@@ -806,16 +806,18 @@ export default {
   }
   
   h1, h2, h3, h4, h5, h6 {
-      font-family: 'Ownglyph_meetme-Rg';
+    font-family: 'Ownglyph_meetme-Rg';
     margin-top: 0;
     margin-bottom: 0.5rem; 
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.8);
     font-weight: 400;}
   
-  .preview {
-      background-color: white;
+  .modal .preview {
+    position: relative;
+    background-color: white;
     margin-top: 150px;
+    margin: auto;
     display: flex;
     align-items: center; /* 수직 가운데 정렬 */
     justify-content: center; /* 수평 가운데 정렬 */
@@ -823,6 +825,12 @@ export default {
     max-width: 1600px;
     max-height: 1200px;
     border: 2px solid #ddd; /* 테두리 스타일 및 색상 설정 */
+    width: 80vw;
+    height: 79vh;
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
   p {
     margin: 0px;
@@ -944,6 +952,7 @@ export default {
       padding-top: 10px;
       margin-top: 15px;
       margin-bottom: 15px;
+      scrollbar-width: thin;
     }
     .no-comment {
     font-family: 'omyu_pretty';
@@ -978,8 +987,11 @@ export default {
     justify-content: space-between;
   }
   
+    .time-like {
+      display: flex;
+      justify-content: space-between
+    }
     .like {
-      margin-top: -33px;
       font-family: 'omyu_pretty';
       color: #2222228c;
       font-size: 1.1rem;
@@ -1189,19 +1201,10 @@ export default {
   
   .modal {
     position: relative;
-    /* overflow: hidden; */
+    z-index: 3;
   }
   
-  .modal .preview {
-    background-color: white;
-    margin-top: 150px;
-    width: 1000px; /* 수정된 부분 */
-    height: 750px; /* 수정된 부분 */
-    border-radius: 20px;
-    border: 2px solid #ddd;
-    padding: 20px;
-    /* overflow-y: auto; */
-  }
+
   
   .modal .preview::-webkit-scrollbar { /* Webkit 브라우저용 스크롤바 */
     width: 8px;
@@ -1216,14 +1219,16 @@ export default {
     background-color: transparent; /* 스크롤바 트랙 배경색 */
   }
   
-  .modal .preview {
-    scrollbar-width: thin; /* Firefox용 스크롤바 */
-  }
-  
   .modal .preview::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* 스크롤바 호버 시 색상 */
   }
   
+  .btn-close-box {
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+    top: -2rem;
+  }
   .btn-close {
     background-color: transparent;
     border: none;
@@ -1233,12 +1238,7 @@ export default {
     width: 30px;
     height: 30px;
     transition: background-color 0.3s ease;
-    position: absolute;
-  }
-
-  .fixed-button {
-  position: relative;
-  left: 250px;
+    right: 1.5rem;
   }
   
   .btn-close:hover {
@@ -1361,17 +1361,11 @@ export default {
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-  .btn-close {
-    position: relative;
-    left: 50%;
-  }
+
 }
 
 @media (max-width: 768px) { 
-  .btn-close {
-    position: relative;
-    left: 50%;
-  }
+
 }
   
 </style>

@@ -178,6 +178,7 @@ export default {
       }
     },
     async openModal(post) {
+      document.body.style.overflow = 'hidden';
       this.selectedCard = post;
       this.$emit('updateViewCount', post.id);
       this.showModal = true;
@@ -206,6 +207,7 @@ export default {
    closeModal(postId) {
       this.showModal = false;
       this.fetchCommentCount(postId);
+      document.body.style.overflow = '';
     },
     fetchCommentCount(postId) {
       this.axios.get(`/api/comment/totalCount`, {
