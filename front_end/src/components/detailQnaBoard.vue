@@ -51,7 +51,7 @@
           </div>
         <!-- </div> -->
 
-        <div class="cm-interactions" style="max-height: 175px; overflow-y: auto; min-height: 175px;">
+        <div class="cm-interactions" style="max-height: 175px;">
           <div v-if="comments.length === 0" class="no-comment">아직 댓글이 없습니다.</div>
           <div class="comments" v-for="comment in comments" :key="comment.id">
             <div class="comment">
@@ -810,10 +810,10 @@
       position: fixed; 
       margin: auto; 
       pointer-events: auto; 
-      width: 80%;
-      max-width: 1000px; 
+      max-width: 1000px;
+      max-height: 1000px; 
       height: 90vh;
-      max-height: 1000px;
+      width: 80vw;
   }
   .modal-content {
       position: relative;
@@ -900,8 +900,8 @@
   .btn-close {
     background-image: none;
     position: absolute;
-    top: 15px;
-    right: 50px;
+    top: 10px;
+    right: 15px;
     z-index: 10;
     background-color: transparent;
     border: none;
@@ -911,7 +911,6 @@
     width: 30px;
     height: 30px;
     transition: background-color 0.3s ease;
-     
     }
     
     .btn-close:hover {
@@ -1146,6 +1145,9 @@
       /* margin-top: 375px; */
       margin-bottom: 15px;
       width: 90%;
+      overflow-y: auto;
+      scrollbar-width: thin; 
+      min-height: 175px;
       }
       .no-comment {
         margin-top: 70px;
