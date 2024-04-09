@@ -256,6 +256,8 @@ export default {
     width: 100%; /* 변경 */
     height: 100%; /* 변경 */
     z-index: 1001;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 .modal-content > img {
