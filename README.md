@@ -7,6 +7,8 @@ PETPUBLIC은 반려동물과 함께하는 일상을 기록하고, 동반 가능�
 
 ![petpublic_site](https://github.com/jdhert/pet-public/assets/106420689/468f28df-ce23-47cc-a2e6-f5b3177c9f67)
 
+(자세한 설명 [Team projects PPT](https://www.canva.com/design/DAGAtHJ__6E/w_r6gat_Xpq1i0Re05Ka5A/edit?utm_content=DAGAtHJ__6E&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) / [Team projects WIKI](https://github.com/jdhert/Pet-Public/wiki) )
+
 # 사이트 소개 🌟
 펫퍼블릭 사이트는 소중한 반려동물과 함께하는 삶을 더욱 특별하게 만들기 위해 플랫폼을 기획하였습니다.
 펫퍼블릭에서는 이용자들이 반려동물의 건강과 관련된 궁금한 사항들을 자유롭게 물어보고, 서로의 경험과 지식을 나눌 수 있는 공간을 제공합니다.
@@ -68,14 +70,25 @@ PETPUBLIC은 반려동물과 함께하는 일상을 기록하고, 동반 가능�
 - Depolyment <br/>
   <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/Oracle-F80000?style=flat&logo=oracle&logoColor=white" />
-  
-# 3. API 
-# [PETPUBLIC_API 바로가기](https://docs.google.com/spreadsheets/d/1gMJ9rlFeqWfEmgBWGMOSXD77nl94u65oLYiIHuPNWO4/edit?usp=sharing)
 
-# 4. 배포 
+# 3. Feature
+- 카카오맵 검색
+- 카카오맵 로드뷰
+- 공공 API 장소 검색
+- 로그인/회원가입
+- 구글/네이버/카카오 로그인
+- 다이어리 CRUD
+- 자유 게시판 CRUD
+- Q&A 및 Q&A 답변 CRUD
+
+  
+# 4. 명세서 
+# [PET-PUBLIC_프로젝트 명세서 바로가기](https://docs.google.com/spreadsheets/d/1gMJ9rlFeqWfEmgBWGMOSXD77nl94u65oLYiIHuPNWO4/edit?usp=sharing)
+
+# 5. 배포 
 💛 https://pet-public.xyz 💛
 
-# 5. Authors 
+# 6. Authors 
 - 🤠 박세한 [팀장] [jdhert](https://github.com/jdhert)
 - 👩 김미성 [kimmisung](https://github.com/kimmisung)
 - 😴 박현오 [han7828](https://github.com/han7828)
