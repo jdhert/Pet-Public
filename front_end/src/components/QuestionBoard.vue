@@ -247,6 +247,7 @@ export default {
             this.$router.push(`/addqna`);
         },
         openModal(post) {
+            document.body.style.overflow = 'hidden';
             this.selectedPost = post;
             this.showQnaModal = true;
             this.axios.put(`/api/free/view/${this.selectedPost.id}`, {
@@ -260,6 +261,7 @@ export default {
             });
         },
         closeModal(postId) {
+            document.body.style.overflow = '';
             this.showQnaModal = false;
             this.fetchCommentCount(postId);
         },
