@@ -816,7 +816,7 @@ export default {
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.8);
     font-weight: 400;}
-  
+    
   .modal .preview {
     position: relative;
     background-color: white;
@@ -829,7 +829,7 @@ export default {
     max-width: 1600px;
     max-height: 1200px;
     border: 2px solid #ddd; /* 테두리 스타일 및 색상 설정 */
-    width: 80vw;
+    width: 70vw;
     height: 79vh;
     border-radius: 20px;
     padding: 20px;
@@ -879,7 +879,7 @@ export default {
     /* margin-top: 200px; */
     /* max-width: 1200px; */
     width: 70%;
-    /* height: 80vh; */
+    height: 80vh;
     padding: 0 20px;
   }
     .dog-image {
@@ -1230,8 +1230,7 @@ export default {
   .btn-close-box {
     display: flex;
     flex-direction: row-reverse;
-    position: relative;
-    top: -2rem;
+    margin-top: 1.5rem;
   }
   .btn-close {
     background-color: transparent;
