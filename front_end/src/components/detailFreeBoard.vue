@@ -3,7 +3,7 @@
     <div class="preview">
       <carousel :items-to-show="1">
         <slide v-for="slide in slides" :key="slide.id">
-          <img :src="slide.src" :alt="slide.alt" class="dog-image" />
+          <img :src="slide.src != null ? slide.src : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" :alt="slide.alt" class="dog-image" />
         </slide>
         <template #addons>
           <navigation />
@@ -17,7 +17,7 @@
             </button>
           </div>
           <div class="profile-info" style="align-items: center;">
-            <img class="profile-image" :src="selectedCard.userImg" alt="Profile" />
+            <img class="profile-image" :src="this.selectedCard.userImg != null ? this.selectedCard.userImg : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" alt="Profile" />
             <h1 class="username">{{ this.selectedCard.writer }}</h1>
             <button class="btn-share" style="margin-right: 0.8%;" @click="showShareModal=true"><i class="fas fa-share-alt"></i></button>
             <FreeShareModal v-if="showShareModal" :selectedCard="selectedCard" @closeShareModal="showShareModal = false" :subject="'free'"/>
@@ -538,8 +538,12 @@ export default {
     this.$router.push(`/editfree`);
   },
   goToDelete() {
-    let id = this.selectedCard.id;
-    this.$emit('deleteBoard', id);
+    if (confirm("정말 게시글을 삭제하시겠습니까??") == true){    //확인
+      let id = this.selectedCard.id;
+      this.$emit('deleteBoard', id);
+    }else{   //취소
+        return;
+    }
   },
   //댓글 수정 버튼 토글
   editComment(comment) {

@@ -53,20 +53,7 @@ public class BoardService {
         List<String> imageUrls = images.stream()
                 .map(path -> frontendUrl + "/images/" + path)
                 .collect(Collectors.toList());
-//                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-//                        .path("/images/")
-//                        .path(path)
-//                        .toUriString())
-//                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
-//                .collect(Collectors.toList());
         return ResponseEntity.ok(imageUrls);
     }
 
-//    public List<BoardInfo> getMyBoards(long id, int subject, int page){
-//        int maxPage=10;
-//        int offset;
-//        int limit = 10;
-//        offset = (page - 1) * maxPage;
-//        return boardMapper.getMyBoards(id, subject);
-//    }
 }

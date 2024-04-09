@@ -35,7 +35,7 @@
           <div class="preview">
             <carousel :items-to-show="1">
               <slide v-for="slide in slides" :key="slide.id">
-                <img :src="slide.src" :alt="slide.alt" class="dog-image" />
+                <img :src="slide.src != null ? slide.src : 'https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" onerror="this.onerror=null; this.src='https://www.shutterstock.com/image-vector/default-image-icon-vector-missing-260nw-2086941550.jpg'" :alt="slide.alt" class="dog-image" />
               </slide>
               <template #addons>
                 <navigation />
@@ -234,8 +234,12 @@
       },
       //게시글 삭제 버튼 클릭 시
       goToDeletePost(){
+        if (confirm("정말 게시글을 삭제하시겠습니까??") == true){    //확인
           const id = this.selectedPost.id;
           this.$emit('deleteBoard', id);
+        }else{   //취소
+          return;
+        }
       },
       //게시글 좋아요
       toggleLike(selectedPost) {
