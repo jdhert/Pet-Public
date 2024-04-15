@@ -376,10 +376,8 @@ export default {
     justify-content: center;
     max-width: 1200px;
     margin: 0 auto;
-    /* background-color: white; */
     margin-bottom: 90px;
     font-family: "Montserrat", Arial, sans-serif;
-    /* background: #fff; */
     font-size: 15px;
     line-height: 1.8;
     font-weight: 400;
@@ -395,7 +393,6 @@ export default {
     margin: 0 auto;
     background-color: white;
   }
-
 
   .col-md-4 {
     margin-top: 20px;
