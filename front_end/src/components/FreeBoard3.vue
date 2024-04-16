@@ -367,7 +367,6 @@ export default {
   }
 
   .banner-image {
-    /* margin-top: 50px; */
     width: 50%;
   }
 
