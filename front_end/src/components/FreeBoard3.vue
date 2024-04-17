@@ -322,7 +322,6 @@ export default {
         subject: 0
       }
     }).then((res) => {
-      // console.log(res)
       this.posts = res.data;
     }).catch();
 
