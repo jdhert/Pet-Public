@@ -332,6 +332,7 @@ export default {
             });
         },
         handleTagSearch(tag) {
+            document.body.style.overflow = '';
             this.showQnaModal = false;
             this.axios.get(`/api/free/search/1`, {
                 params: {
