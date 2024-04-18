@@ -830,7 +830,7 @@ export default {
     max-height: 1200px;
     border: 2px solid #ddd; /* 테두리 스타일 및 색상 설정 */
     width: 70vw;
-    height: 79vh;
+    height: 70vh;
     border-radius: 20px;
     padding: 20px;
     overflow-y: auto;
@@ -879,7 +879,7 @@ export default {
     /* margin-top: 200px; */
     /* max-width: 1200px; */
     width: 70%;
-    height: 80vh;
+    height: 70vh;
     padding: 0 20px;
   }
     .dog-image {
@@ -1253,7 +1253,7 @@ export default {
   }
   .carousel {
     width: 50%;
-    height: 80vh;
+    /* height: 80vh; */
   }
   /* 캐러셀 내부 요소 간격 조절 */
   .carousel .slide {
