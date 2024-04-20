@@ -823,12 +823,12 @@ export default {
     margin-top: 150px;
     margin: auto;
     display: flex;
-    align-items: center; /* 수직 가운데 정렬 */
-    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; 
+    justify-content: center;
     border-radius: 20px;
     max-width: 1600px;
     max-height: 1200px;
-    border: 2px solid #ddd; /* 테두리 스타일 및 색상 설정 */
+    border: 2px solid #ddd; 
     width: 70vw;
     height: 70vh;
     border-radius: 20px;
