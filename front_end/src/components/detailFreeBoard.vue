@@ -889,7 +889,6 @@ export default {
     }
 
     .profile-image {
-      /* margin-top: -10px; */
       border-radius: 50%;
       border: 4px solid;
       margin-right: 10px;
