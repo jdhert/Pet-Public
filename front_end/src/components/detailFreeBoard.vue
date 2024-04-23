@@ -914,7 +914,6 @@ export default {
       font-family: 'omyu_pretty';
       font-weight: 500;
       font-size: 1.3rem;
-      /* margin: 5px 0; */
     }
     
     .hashtags {
