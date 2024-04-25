@@ -917,7 +917,6 @@ export default {
     }
     
     .hashtags {
-      /* margin-top: 20px; */
       font-family: 'omyu_pretty';
       text-align: left;
       color: #0b0c5ce5;
