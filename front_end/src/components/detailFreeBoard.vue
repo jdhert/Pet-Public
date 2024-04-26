@@ -974,7 +974,7 @@ export default {
     padding-top: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 좌우로 요소들을 배치합니다. */
+    justify-content: space-between; 
   }
   
   .comment-count,
