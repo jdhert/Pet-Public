@@ -1005,7 +1005,7 @@ export default {
       font-family: 'omyu_pretty';
       font-size: 1rem;
       color: #999;
-      margin-right: 3px; /* 아이콘과 숫자 사이의 간격 조정 */
+      margin-right: 3px; 
       display: flex;
       align-items: center;
       width: 47px;
