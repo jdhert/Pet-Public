@@ -1015,7 +1015,7 @@ export default {
     .i {
       font-family: "Font Awesome 5 Free";
       font-size: 0.5rem;
-      color: rgb(245, 5, 5);   /* 하트 아이콘의 색상 */
+      color: rgb(245, 5, 5);  
       margin-right: 3px; /* 아이콘과 숫자 사이의 간격 조정 */
     }
   
