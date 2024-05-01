@@ -1022,7 +1022,7 @@ export default {
     .fa-heart {
     font-family: "Font Awesome 5 Free";
     font-size: 0.8rem;
-    margin-right: 3px; /* 아이콘과 숫자 사이의 간격 조정 */
+    margin-right: 3px;
     color: rgb(245, 5, 5);
     
   }
