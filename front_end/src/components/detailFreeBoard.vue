@@ -1031,7 +1031,7 @@ export default {
 
   }
     .fas.fa-heart.filled {
-    color: rgb(245, 5, 5); /* 채워진 하트의 색상 */
+    color: rgb(245, 5, 5); 
   }
   
   .like-interactions {
