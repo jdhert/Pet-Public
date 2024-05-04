@@ -1039,7 +1039,7 @@ export default {
   }
     .comment {
     display: flex;
-    flex-direction: row; /* 댓글 요소들을 가로로 배치 */
+    flex-direction: row; 
     align-items: center; /* 요소들을 세로 가운데 정렬 */
     padding: 10px 0; /* 위아래로 간격 추가 */
   }
