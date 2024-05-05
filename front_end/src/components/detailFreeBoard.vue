@@ -1040,7 +1040,7 @@ export default {
     .comment {
     display: flex;
     flex-direction: row; 
-    align-items: center; /* 요소들을 세로 가운데 정렬 */
+    align-items: center; 
     padding: 10px 0; /* 위아래로 간격 추가 */
   }
 
