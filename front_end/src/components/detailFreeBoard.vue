@@ -1041,7 +1041,7 @@ export default {
     display: flex;
     flex-direction: row; 
     align-items: center; 
-    padding: 10px 0; /* 위아래로 간격 추가 */
+    padding: 10px 0; 
   }
 
   .reply {
