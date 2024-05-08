@@ -1048,7 +1048,7 @@ export default {
   flex-wrap: wrap;
   display: flex;
   flex-direction: row; 
-  align-items: center; /* 요소들을 세로 가운데 정렬 */
+  align-items: center; 
   margin-left: 15px;
   padding: 3px 0;
   width: 97%;
