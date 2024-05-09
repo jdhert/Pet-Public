@@ -1057,7 +1057,6 @@ export default {
 .reply2 {
   flex-wrap: wrap;
   display: flex;
-  /* flex-direction: row; */
   align-items: center;
   margin-left: 15px;
   padding: 3px 0;
