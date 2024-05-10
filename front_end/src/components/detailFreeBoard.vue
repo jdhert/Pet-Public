@@ -1082,7 +1082,7 @@ export default {
   .reply-user-commnet,
   .user-comment {
     font-size: 1rem;
-    flex-grow: 1; /* 댓글 내용이 가능한 최대 너비를 가지도록 설정 */
+    flex-grow: 1; 
     margin-left: 10px;
     margin-right: 10px;
     text-align: left;
