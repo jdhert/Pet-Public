@@ -1130,7 +1130,7 @@ export default {
     background-color: white;
     border: 1px solid;
     border-radius: 50%;
-    width: 35px; /* 이미지 너비 조정 */
+    width: 35px;
     height: 35px; /* 이미지 높이 조정 */
     min-width: 35px;
   }
