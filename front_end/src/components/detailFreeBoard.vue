@@ -1136,7 +1136,7 @@ export default {
   }
   
   .add-comment {
-    margin-left: 30px; /* 이미지와 텍스트 사이 간격 조정 */
+    margin-left: 30px; 
   }
   
   .comment-input {
