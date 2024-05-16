@@ -1141,7 +1141,7 @@ export default {
   
   .comment-input {
     padding: 10px;
-    font-size: 1rem; /* 폰트 크기 설정 */
+    font-size: 1rem; 
     font-family: 'Ownglyph_meetme-Rg';
     border: 1px solid #ced4da; /* 입력 상자 테두리 설정 */
     border-radius: 50px; /* 입력 상자 테두리 모서리를 둥글게 설정 */
