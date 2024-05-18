@@ -1144,7 +1144,7 @@ export default {
     font-size: 1rem; 
     font-family: 'Ownglyph_meetme-Rg';
     border: 1px solid #ced4da;
-    border-radius: 50px; /* 입력 상자 테두리 모서리를 둥글게 설정 */
+    border-radius: 50px; 
     margin-left: 10px;
   }
   .comment-input:focus {
