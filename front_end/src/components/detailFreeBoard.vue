@@ -1168,7 +1168,7 @@ export default {
   
   .comment-button:focus {
     outline: none; 
-    border-color: #007bff; /* 포커스 상태일 때 테두리 색상 변경 */
+    border-color: #007bff; 
   }
 /* 
   .addnewcomment {
