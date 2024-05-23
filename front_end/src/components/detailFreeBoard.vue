@@ -1206,7 +1206,7 @@ export default {
   
 
   
-  .modal .preview::-webkit-scrollbar { /* Webkit 브라우저용 스크롤바 */
+  .modal .preview::-webkit-scrollbar { 
     width: 8px;
   }
   
