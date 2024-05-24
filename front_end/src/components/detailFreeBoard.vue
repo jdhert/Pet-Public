@@ -1211,7 +1211,7 @@ export default {
   }
   
   .modal .preview::-webkit-scrollbar-thumb {
-    background-color: #888; /* 스크롤바 색상 */
+    background-color: #888; 
     border-radius: 4px; /* 스크롤바 모서리 둥글게 */
   }
   
