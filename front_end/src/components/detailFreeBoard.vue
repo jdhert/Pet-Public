@@ -1216,7 +1216,7 @@ export default {
   }
   
   .modal .preview::-webkit-scrollbar-track {
-    background-color: transparent; /* 스크롤바 트랙 배경색 */
+    background-color: transparent; 
   }
   
   .modal .preview::-webkit-scrollbar-thumb:hover {
