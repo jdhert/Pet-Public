@@ -1220,7 +1220,7 @@ export default {
   }
   
   .modal .preview::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* 스크롤바 호버 시 색상 */
+    background-color: #555;
   }
   
   .btn-close-box {
