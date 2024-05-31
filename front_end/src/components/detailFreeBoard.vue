@@ -1249,7 +1249,6 @@ export default {
   }
   .carousel {
     width: 50%;
-    /* height: 80vh; */
   }
   /* 캐러셀 내부 요소 간격 조절 */
   .carousel .slide {
