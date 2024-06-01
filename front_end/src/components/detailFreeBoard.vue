@@ -1275,7 +1275,6 @@ export default {
   .btn-share,
   .btn-edit,
   .btn-delete {
-    /* margin-top: 10px; */
     font-family: 'omyu_pretty';
     background-color: #999;
     color: #fff;
