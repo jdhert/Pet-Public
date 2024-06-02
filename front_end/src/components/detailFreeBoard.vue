@@ -1267,7 +1267,7 @@ export default {
   
   /* 화살표와 이미지 간격 조절 */
   .carousel .navigation {
-    margin: 0 -800px; /* 화살표와 이미지 사이의 간격 조절 */
+    margin: 0 -800px; 
   }
   .dog-image {
     width: 80%;
