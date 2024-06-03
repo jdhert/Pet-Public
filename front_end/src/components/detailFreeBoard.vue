@@ -1291,7 +1291,7 @@ export default {
   
   .interaction-info {
     display: flex;
-    justify-content: flex-end; /* 버튼을 우측으로 정렬 */
+    justify-content: flex-end; 
   }
   
   
