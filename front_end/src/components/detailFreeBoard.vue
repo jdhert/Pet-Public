@@ -1265,7 +1265,6 @@ export default {
     padding: 0px; /* 이미지 주변의 여백을 제거합니다. */
   }
   
-  /* 화살표와 이미지 간격 조절 */
   .carousel .navigation {
     margin: 0 -800px; 
   }
