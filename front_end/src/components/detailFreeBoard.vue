@@ -1295,7 +1295,7 @@ export default {
   
   
   .btn-share:hover, .btn-edit:hover, .btn-delete:hover {
-    background-color: #007bff;/* 마우스 호버 시 배경색 변경 */
+    background-color: #007bff;
   }
   .btn-edit-comment,
   .btn-delete-comment {
