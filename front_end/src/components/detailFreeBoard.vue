@@ -1302,7 +1302,7 @@ export default {
   font-family: 'omyu_pretty';
   font-size: 0.65rem;
   color: #333;
-  background-color: transparent; /* 배경색 투명으로 설정 */
+  background-color: transparent; 
   border: none;
   border-radius: 5px;
   padding: 5px 5px;
