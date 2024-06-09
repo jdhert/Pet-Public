@@ -1261,7 +1261,7 @@ export default {
     max-height: 100%; /* 이미지의 최대 높이를 부모 요소에 맞게 설정합니다. */
     width: auto; /* 이미지의 너비를 자동으로 조정합니다. */
     height: 600px; /* 이미지의 높이를 자동으로 조정합니다. */
-    margin: 10px; /* 이미지 주변의 여백을 제거합니다. */
+    margin: 10px; 
     padding: 0px; 
   }
   
